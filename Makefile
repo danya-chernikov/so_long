@@ -1,6 +1,6 @@
 CC=cc
 NAME=so_long
-LIBFT=Libft/libft.a
+LIBFT=libft/libft.a
 PRINTF=printf/libftprintf.a
 LIBX=libx/libmlx.a
 LIBX_FLAGS=-lXext -lX11 -lm -lz
@@ -14,7 +14,7 @@ OBJS=main.o map_checker.o
 
 
 $(NAME) : $(OBJS)
-	cd Libft/ && $(MAKE) all && $(MAKE) bonus # First let's build the Libft
+	cd libft/ && $(MAKE) all && $(MAKE) bonus # First let's build the Libft
 	cd printf/ && $(MAKE) all # Next let's build printf
 	cd libx/ && $(MAKE) all # Finally let's build minilibx for Linux
 	$(CC) $(CFLAGS) -no-pie $(OBJS) $(LIBFT) $(PRINTF) $(LIBX) $(LIBX_FLAGS) -o $(NAME) # Building so_long itself
