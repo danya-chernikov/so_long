@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 04:54:19 by dchernik          #+#    #+#             */
-/*   Updated: 2025/04/21 13:47:12 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:43:18 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,16 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+size_t	ft_strlength(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	return (i);
+}
 
 void	ft_bzero(void *s, size_t n)
 {
@@ -55,24 +65,14 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	return (ptr);
 }
 
-int	ft_putstr_fd(char *s, int fd)
+int	ft_putstring_fd(char *s, int fd)
 {
-	int	slen;
+	size_t  slen;
 
-	slen = ft_strlen(s);
+	slen = ft_strlength(s);
 	if (write(fd, s, slen) == -1)
 		return (-1);
 	return (0);
-}
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
 }
 
 char	*ft_itoa_pos(unsigned int n)

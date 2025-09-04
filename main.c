@@ -8,6 +8,7 @@ int	main(int argc, char *argv[])
 {
 	void	*mlx;
 	void	*mlx_win;
+    t_map   map;
 
 	if (argc != 2)
 	{
@@ -16,7 +17,8 @@ int	main(int argc, char *argv[])
 	}
 
 	ft_printf("%s\n", argv[1]);
-	check_map();
+    map_init(&map, argv[1]);
+	map_check(&map);
 
 	mlx = mlx_init();
 	if (mlx == NULL)
