@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 15:51:36 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/05 22:34:01 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/05 23:03:41 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,11 +139,6 @@ int map_init(t_map *map, const char *file_path)
 
     map->height = nls_num;
     // Allocating memory for the map
-   /* ft_printf("Before malloc()\n");
-    ft_printf("map->height = %u\n", map->height);
-    ft_printf("sizeof (char *) = %u\n", sizeof (char *));
-    ft_printf("map->height * sizeof (char *) =  %u\n", map->height * sizeof (char *));*/
-    /*
     map->matrix = (char **)malloc(map->height * sizeof (char *));
     if (!map->matrix)
     {
@@ -164,9 +159,10 @@ int map_init(t_map *map, const char *file_path)
             ++cnt_i;
             ++i;
         }
+        ++cnt_i;
         map->width = i;
 
-        map->matrix[raw_i] = (char *)malloc(map->width * sizeof (char));
+        map->matrix[raw_i] = (char *)malloc((map->width + 1) * sizeof (char));
         if (!map->matrix[raw_i])
         {
             --raw_i;
@@ -184,12 +180,10 @@ int map_init(t_map *map, const char *file_path)
         // Now let's copy this raw into our matrix
         size_t  j;
 
-        ft_printf("before loop\n");
         j = 0;
         while (j < i)
         {
-            map->matrix[raw_i][j] = file_cnt[cnt_i - j];
-            ft_printf("map->matrix[%u][%u] = file_cnt[%u]\n", raw_i, j, cnt_i - j);
+            map->matrix[raw_i][j] = file_cnt[cnt_i - i + j - 1];
             ++j;
         }
         map->matrix[raw_i][j] = '\0';
@@ -197,14 +191,9 @@ int map_init(t_map *map, const char *file_path)
         ++raw_i;
     }
 
-    ft_printf("\nMap:\n");
+    // Printing the map
     for (size_t ri = 0; ri < map->height; ++ri)
-    {
-        for (size_t ci = 0; ci < map->width; ++ci)
-            ft_printf("%c", map->matrix[ri][ci]);
-        ft_printf("\n");
-    }
-    ft_printf("\n");
+        ft_printf("%s\n", map->matrix[ri]);
 
     i = 0;
     while (i < (size_t)map->height)
@@ -212,7 +201,7 @@ int map_init(t_map *map, const char *file_path)
         free(map->matrix[i]);
         ++i;
     }
-    free(map->matrix);*/
+    free(map->matrix);
 
     free(read_chunk);
     free(file_cnt);
