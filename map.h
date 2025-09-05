@@ -16,18 +16,20 @@
  * `all_file_cnt` array  will be increased
  * during each subsequent  memory reallocation */
 #define MAP_INC_CHUNK_SIZE          8192
-
 #define MAP_FILE_EXTENSION          ".ber"
+
+/* Error messages */
+#define MEM_ALLOC_ERR               "Memory allocation error\n"
 #define MAP_FILE_EXT_ERR            "Map file extension is invalid\n"
 #define MAP_FORMAT_RECT_ERR         "Map format error: map must be rectangular\n"
 #define MAP_FORMAT_ZERO_WIDTH_ERR   "Map format error: map cannot contain empty raws\n"
 #define MAP_FORMAT_EMPTY_ERR        "Map format error: map file is empty\n"
-#define MEM_ALLOC_ERR               "Memory allocation error\n"
+#define MAP_FORMAT_MIN_RAWS         "Map format error: map has to contain at least 3 raws\n"
 
 typedef struct  s_map
 {
-    int     width;
-    int     height;
+    size_t  width;
+    size_t  height;
     char    **matrix;
 }   t_map;
 
