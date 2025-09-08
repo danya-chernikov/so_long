@@ -16,15 +16,30 @@
  * `all_file_cnt` array  will be increased
  * during each subsequent  memory reallocation */
 #define MAP_INC_CHUNK_SIZE          8192
+#define MAP_MIN_RAWS_NUM            3
+#define MAP_MIN_COLUMNS_NUM         3
 #define MAP_FILE_EXTENSION          ".ber"
 
 /* Error messages */
-#define MEM_ALLOC_ERR               "Memory allocation error\n"
-#define MAP_FILE_EXT_ERR            "Map file extension is invalid\n"
-#define MAP_FORMAT_RECT_ERR         "Map format error: map must be rectangular\n"
-#define MAP_FORMAT_ZERO_WIDTH_ERR   "Map format error: map cannot contain empty raws\n"
-#define MAP_FORMAT_EMPTY_ERR        "Map format error: map file is empty\n"
-#define MAP_FORMAT_MIN_RAWS         "Map format error: map has to contain at least 3 raws\n"
+#define MEM_ALLOC_ERR_MSG           "Memory allocation error\n"
+/* Map error messages */
+#define MAP_OPEN_ERR_MSG            "Cound not open the map file\n"
+#define MAP_EXT_ERR_MSG             "Map file extension is invalid\n"
+#define MAP_RECT_ERR_MSG            "Map format error: map must be rectangular\n"
+#define MAP_EMPTY_RAW_ERR_MSG       "Map format error: map cannot contain empty raws\n"
+#define MAP_EMPTY_ERR_MSG           "Map format error: map file is empty\n"
+#define MAP_MIN_RAWS_ERR_MSG        "Map format error: map has to contain at least 3 raws\n"
+
+/* Exit codes
+ *     ERROR         - denotes a general error (which may
+ *                     also include a memory allocation error);
+ *     MEM_ALLOC_ERR - specifically denotes a memory
+ *                     allocation error, used when a
+ *                     function can return multiple
+ *                     error codes */
+#define SUCCESS_CODE                1
+#define ERROR_CODE                  0
+#define MEM_ALLOC_ERR_CODE          -1
 
 typedef struct  s_map
 {
@@ -34,6 +49,7 @@ typedef struct  s_map
 }   t_map;
 
 int     map_init(t_map *map, const char *file_path);
+int     read_map_file_cnt(int fd, char **file_cnt, size_t *cnt_size);
 int     map_check_file_ext(const char *file_path);
 int     map_check(const t_map *map);
 void    map_free(t_map *map);

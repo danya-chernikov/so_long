@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 15:51:36 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/05 23:03:41 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/08 14:06:48 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,71 +22,40 @@
  *     cnt_size - all map file content size */
 int map_init(t_map *map, const char *file_path)
 {
-    size_t  i;
     int     fd;
-    size_t  rlen;
+    int     res;
+    size_t  i;
     size_t  cnt_size;
-    char    *read_chunk;
     char    *file_cnt;
-
-    (void)map;
 
     // Checking if map file extension is correct
     if (!map_check_file_ext(file_path))
     {
-        write(2, MAP_FILE_EXT_ERR, ft_strlen(MAP_FILE_EXT_ERR));
-        return (EXIT_FAILURE);
+        write(STDERR_FILENO, MAP_EXT_ERR_MSG, ft_strlen(MAP_EXT_ERR_MSG));
+        return (ERROR_CODE);
     }
 
     // Let's open the map file
     fd = open(file_path, O_RDONLY);
     if (fd < 0)
     {
-        perror("open(): Could not open the map file");
-        return (EXIT_FAILURE);
-    }
-
-    // Allocating memory for a chunk
-    read_chunk = (char *)malloc(MAP_INC_CHUNK_SIZE * sizeof (char));
-    if (!read_chunk)
-    {
-        write(2, MEM_ALLOC_ERR, ft_strlen(MEM_ALLOC_ERR));
-        return (EXIT_FAILURE);
+        write(STDERR_FILENO, MAP_OPEN_ERR_MSG, ft_strlen(MAP_OPEN_ERR_MSG));
+        return (ERROR_CODE);
     }
 
     // Allocating memory for all map file content buffer
     file_cnt = (char *)malloc(MAP_INC_CHUNK_SIZE * sizeof (char));
     if (!file_cnt)
     {
-        write(2, MEM_ALLOC_ERR, ft_strlen(MEM_ALLOC_ERR));
-        return (EXIT_FAILURE);
+        write(STDERR_FILENO, MEM_ALLOC_ERR_MSG, ft_strlen(MEM_ALLOC_ERR_MSG));
+        return (ERROR_CODE);
     }
-
-    char    *tmp_cnt;
-
-    rlen = 0;
-    cnt_size = 0;
-    // Reading the map file chunk by chunk
-    while (1)
+    
+    res = read_map_file_cnt(fd, &file_cnt, &cnt_size);
+    if (res <= 0)
     {
-        rlen = read(fd, read_chunk, MAP_INC_CHUNK_SIZE);
-        if (!rlen) // end-of-file
-            break;
-        else // Reading the next chunk
-        {
-            // Let's copy its content into common file content
-            // Let's allocate more memory for newly read chunk
-            tmp_cnt = ft_realloc(file_cnt, cnt_size, cnt_size + rlen);
-            if (!tmp_cnt)
-            {
-                free(file_cnt);
-                write(2, MEM_ALLOC_ERR, ft_strlen(MEM_ALLOC_ERR));
-                return (EXIT_FAILURE);
-            }
-            file_cnt = tmp_cnt;
-            copy_content(file_cnt, read_chunk, rlen, cnt_size);
-            cnt_size += rlen;
-        }
+        free(file_cnt);
+        return (ERROR_CODE);
     }
 
     // Let's print all read content
@@ -126,13 +95,12 @@ int map_init(t_map *map, const char *file_path)
     
     ft_printf("nls_num = %u\n", nls_num);
 
-    if (nls_num < 3)
+    if (nls_num < MAP_MIN_RAWS_NUM)
     {
-        write(STDERR_FILENO, MAP_FORMAT_MIN_RAWS,
-                ft_strlen(MAP_FORMAT_MIN_RAWS));
-        exit(EXIT_FAILURE);
+        write(STDERR_FILENO, MAP_MIN_RAWS_ERR_MSG,
+            ft_strlen(MAP_MIN_RAWS_ERR_MSG));
+        return (ERROR_CODE);
     }
-
 
     // Now let's split all the found new lines into an array
     i = 0;
@@ -142,8 +110,8 @@ int map_init(t_map *map, const char *file_path)
     map->matrix = (char **)malloc(map->height * sizeof (char *));
     if (!map->matrix)
     {
-        write(STDERR_FILENO, MEM_ALLOC_ERR, ft_strlen(MEM_ALLOC_ERR));
-        return (EXIT_FAILURE);
+        write(STDERR_FILENO, MEM_ALLOC_ERR_MSG, ft_strlen(MEM_ALLOC_ERR_MSG));
+        return (0);
     }
 
     size_t  raw_i;
@@ -173,8 +141,8 @@ int map_init(t_map *map, const char *file_path)
             }
             free(map->matrix[raw_i]);
             free(map->matrix);
-            write(STDERR_FILENO, MEM_ALLOC_ERR, ft_strlen(MEM_ALLOC_ERR));
-            return (EXIT_FAILURE);
+            write(STDERR_FILENO, MEM_ALLOC_ERR_MSG, ft_strlen(MEM_ALLOC_ERR_MSG));
+            return (ERROR_CODE);
         }
 
         // Now let's copy this raw into our matrix
@@ -195,6 +163,7 @@ int map_init(t_map *map, const char *file_path)
     for (size_t ri = 0; ri < map->height; ++ri)
         ft_printf("%s\n", map->matrix[ri]);
 
+    // Free all the stuff
     i = 0;
     while (i < (size_t)map->height)
     {
@@ -203,10 +172,65 @@ int map_init(t_map *map, const char *file_path)
     }
     free(map->matrix);
 
-    free(read_chunk);
     free(file_cnt);
     close(fd);
-    return (1);
+
+    return (SUCCESS_CODE);
+}
+
+/* Reads the map file content into `file_cnt`.
+ * We read the map file chunk by chunk in an
+ * infinite loop. If the end of file is reached,
+ * we exit the loop; otherwise, we read the
+ * next chunk, reallocate memory for file_cnt
+ * (increasing it by the size of the previously
+ * read chunk), and append the new content to
+ * `file_cnt`.
+ * On success, returns the number of bytes read
+ * from the map file; if the return value is -1,
+ * a memory allocation error has occurred. A return
+ * value of 0 is also considered an error, since
+ * the map file cannot be empty */
+int read_map_file_cnt(int fd, char **file_cnt, size_t *cnt_size)
+{
+    size_t  rlen;
+    char    *read_chunk;
+    char    *tmp_cnt;
+
+    read_chunk = (char *)malloc(MAP_INC_CHUNK_SIZE * sizeof (char));
+    if (!read_chunk)
+    {
+        write(STDERR_FILENO, MEM_ALLOC_ERR_MSG, ft_strlen(MEM_ALLOC_ERR_MSG));
+        return (MEM_ALLOC_ERR_CODE);
+    }
+    rlen = 0;
+    *cnt_size = 0;
+    while (1)
+    {
+        rlen = read(fd, read_chunk, MAP_INC_CHUNK_SIZE);
+        if (!rlen)
+            break;
+        else
+        {
+            tmp_cnt = ft_realloc(*file_cnt, *cnt_size, *cnt_size + rlen);
+            if (!tmp_cnt)
+            {
+                write(STDERR_FILENO, MEM_ALLOC_ERR_MSG, ft_strlen(MEM_ALLOC_ERR_MSG));
+                free(read_chunk);
+                return (MEM_ALLOC_ERR_CODE);
+            }
+            *file_cnt = tmp_cnt;
+            copy_content(*file_cnt, read_chunk, rlen, *cnt_size);
+            *cnt_size += rlen;
+        }
+    }
+    free(read_chunk);
+    if (*cnt_size == 0)
+    {
+        write(STDERR_FILENO, MAP_EMPTY_ERR_MSG, ft_strlen(MAP_EMPTY_ERR_MSG));
+        return (ERROR_CODE);
+    }
+    return (SUCCESS_CODE);
 }
 
 /* Copies `size` bytes of content from `src` into `dst` starting with `offest` */
@@ -246,19 +270,19 @@ int map_check_file_ext(const char *file_path)
     int path_len;
 
     if (!file_path)
-        return (0);
+        return (ERROR_CODE);
     path_len = ft_strlen(file_path);
     ext_len = ft_strlen(MAP_FILE_EXTENSION);
     if (path_len <= ext_len)
-        return (0);
+        return (ERROR_CODE);
     i = 1;
     while (i <= ext_len)
     {
         if (file_path[path_len - i] != MAP_FILE_EXTENSION[ext_len - i])
-            return (0);
+            return (ERROR_CODE);
         ++i;
     }
-    return (1);
+    return (SUCCESS_CODE);
 }
 
 /* First checks map file extension */
@@ -267,5 +291,5 @@ int map_check(const t_map *map)
    (void)map;
 
    ft_printf("%s\n", "checking the map...");
-   return (1);
+   return (SUCCESS_CODE);
 }
