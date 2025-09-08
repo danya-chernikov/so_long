@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 15:51:36 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/08 14:06:48 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/08 15:45:01 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,15 @@ int map_init(t_map *map, const char *file_path)
         return (ERROR_CODE);
     }
     
-    res = read_map_file_cnt(fd, &file_cnt, &cnt_size);
-    if (res <= 0)
+    res = map_read_cnt(fd, &file_cnt, &cnt_size);
+    if (!res)
     {
         free(file_cnt);
+        return (ERROR_CODE);
+    }
+    if (cnt_size == 0)
+    {
+        write(STDERR_FILENO, MAP_EMPTY_ERR_MSG, ft_strlen(MAP_EMPTY_ERR_MSG));
         return (ERROR_CODE);
     }
 
@@ -178,57 +183,67 @@ int map_init(t_map *map, const char *file_path)
     return (SUCCESS_CODE);
 }
 
-/* Reads the map file content into `file_cnt`.
- * We read the map file chunk by chunk in an
- * infinite loop. If the end of file is reached,
- * we exit the loop; otherwise, we read the
- * next chunk, reallocate memory for file_cnt
- * (increasing it by the size of the previously
- * read chunk), and append the new content to
- * `file_cnt`.
- * On success, returns the number of bytes read
- * from the map file; if the return value is -1,
- * a memory allocation error has occurred. A return
- * value of 0 is also considered an error, since
- * the map file cannot be empty */
-int read_map_file_cnt(int fd, char **file_cnt, size_t *cnt_size)
+/* Reads the map file content into `file_cnt`. We read the map
+ * file chunk by chunk in an infinite loop. If the end of file
+ * is reached, we exit the loop; otherwise, we read the next chunk,
+ * reallocate memory for `file_cnt` (increasing it by the size of
+ * the previously read chunk), and append the new content to
+ * `file_cnt`. On success, returns the number of bytes read from
+ * the map file; if the return value is -1, a memory allocation
+ * error has occurred. A return value of 0 is also considered an
+ * error, since the map file cannot be empty.
+ * WHY DO WE SEPARATE EXIT ERROR CODES HERE?! */
+int map_read_cnt(int fd, char **file_cnt, size_t *cnt_size)
 {
-    size_t  rlen;
-    char    *read_chunk;
-    char    *tmp_cnt;
+    char    *cnt_chunk;
+    int     res;
 
-    read_chunk = (char *)malloc(MAP_INC_CHUNK_SIZE * sizeof (char));
-    if (!read_chunk)
+    cnt_chunk = (char *)malloc(MAP_INC_CHUNK_SIZE * sizeof (char));
+    if (!cnt_chunk)
     {
         write(STDERR_FILENO, MEM_ALLOC_ERR_MSG, ft_strlen(MEM_ALLOC_ERR_MSG));
-        return (MEM_ALLOC_ERR_CODE);
+        return (ERROR_CODE);
     }
-    rlen = 0;
     *cnt_size = 0;
     while (1)
     {
-        rlen = read(fd, read_chunk, MAP_INC_CHUNK_SIZE);
-        if (!rlen)
-            break;
-        else
-        {
-            tmp_cnt = ft_realloc(*file_cnt, *cnt_size, *cnt_size + rlen);
-            if (!tmp_cnt)
-            {
-                write(STDERR_FILENO, MEM_ALLOC_ERR_MSG, ft_strlen(MEM_ALLOC_ERR_MSG));
-                free(read_chunk);
-                return (MEM_ALLOC_ERR_CODE);
-            }
-            *file_cnt = tmp_cnt;
-            copy_content(*file_cnt, read_chunk, rlen, *cnt_size);
-            *cnt_size += rlen;
-        }
+        res = map_read_cnt_chunk(fd, file_cnt, cnt_size, &cnt_chunk);
+        if (res != SUCCESS_CODE)
+            break ;
     }
-    free(read_chunk);
-    if (*cnt_size == 0)
-    {
-        write(STDERR_FILENO, MAP_EMPTY_ERR_MSG, ft_strlen(MAP_EMPTY_ERR_MSG));
+    if (cnt_chunk)
+        free(cnt_chunk);
+    if (!res)
         return (ERROR_CODE);
+    return (SUCCESS_CODE);
+}
+
+int map_read_cnt_chunk(int fd, char **file_cnt, size_t *cnt_size, char **chunk)
+{
+    char    *tmp_cnt;
+    int     rlen;
+
+    rlen = read(fd, *chunk, MAP_INC_CHUNK_SIZE);
+    if (rlen == 0)
+        return (BREAK);
+    else if (rlen < 0)
+    {
+        perror(READ_FILE_ERR);
+        return (ERROR_CODE);
+    }
+    else
+    {
+        tmp_cnt = ft_realloc(*file_cnt, *cnt_size, *cnt_size + rlen);
+        if (!tmp_cnt)
+        {
+            write(STDERR_FILENO, MEM_ALLOC_ERR_MSG, ft_strlen(MEM_ALLOC_ERR_MSG));
+            free(*chunk);
+            *chunk = NULL;
+            return (ERROR_CODE);
+        }
+        *file_cnt = tmp_cnt;
+        copy_content(*file_cnt, *chunk, rlen, *cnt_size);
+        *cnt_size += rlen;
     }
     return (SUCCESS_CODE);
 }
