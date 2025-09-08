@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 15:51:36 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/08 15:45:01 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/08 19:38:48 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,12 +224,11 @@ int map_read_cnt_chunk(int fd, char **file_cnt, size_t *cnt_size, char **chunk)
     int     rlen;
 
     rlen = read(fd, *chunk, MAP_INC_CHUNK_SIZE);
-    if (rlen == 0)
-        return (BREAK);
-    else if (rlen < 0)
+    if (rlen <= 0)
     {
-        perror(READ_FILE_ERR);
-        return (ERROR_CODE);
+        if (rlen < 0)
+            perror(READ_FILE_ERR);
+        return (BREAK);
     }
     else
     {
