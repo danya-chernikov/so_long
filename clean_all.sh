@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd Libft/
+cd libft/
 make fclean
 cd ../printf/
 make fclean

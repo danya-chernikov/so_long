@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:45 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/09 16:50:46 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/09 18:43:43 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,11 @@ int     map_check_file_ext(const char *file_path);
 int     map_read_cnt(int fd, char **file_cnt, size_t *cnt_size);
 int     map_read_cnt_chunk(int fd, char **file_cnt,
             size_t *cnt_size, char **chunk);
-void    copy_content(char *dst, const char *src,
+void    map_copy_content(char *dst, const char *src,
             const size_t size, const size_t offset);
-void    calc_map_height(t_map *map, char *file_cnt, size_t cnt_size);
+void    map_calc_height(t_map *map, char *file_cnt, size_t cnt_size);
 int     map_split_raws(t_map *map, char *file_cnt, size_t cnt_size);
+int     map_detect_raw(t_map *map, char *file_cnt, size_t cnt_size, void **pack);
 void    map_copy_raw_into_matrix(t_map *map, char *file_cnt, void **pack);
 void    map_matrix_free(t_map *map);
 
