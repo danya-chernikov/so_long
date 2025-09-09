@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 18:40:28 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/04 16:03:37 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/09 13:25:49 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }	t_list;
+
+/* I have the right to use functions
+ * from <stdarg.h> since ft_printf()
+ * already uses it in my project anyway */
+void	**pack_args(int nargs, ...);
 
 int			ft_isalpha(int c);
 int			ft_isdigit(int c);

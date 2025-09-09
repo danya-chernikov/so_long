@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 04:35:03 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/04 16:34:55 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/09 13:52:54 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	string_conv(va_list *vl)
 	}
 	else
 	{
-		len = ft_strlength(str_arg);
+		len = ft_strlen(str_arg);
 		if (ft_putstring_fd(str_arg, 1) == -1)
 			return (-1);
 	}
@@ -80,7 +80,7 @@ int	ptr_conv(va_list *vl)
 		hexnum = int_to_hex(uint_arg, 1);
 		if (hexnum == NULL)
 			return (-1);
-		len = ft_strlength(hexnum) + 2;
+		len = ft_strlen(hexnum) + 2;
 		if (write(1, "0x", (size_t)2) == -1)
 			return (-1);
 		if (ft_putstring_fd(hexnum, 1) == -1)

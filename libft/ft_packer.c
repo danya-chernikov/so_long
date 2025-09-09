@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   packer.c                                           :+:      :+:    :+:   */
+/*   ft_packer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/28 16:34:03 by dchernik          #+#    #+#             */
-/*   Updated: 2025/03/28 16:34:07 by dchernik         ###   ########.fr       */
+/*   Created: 2025/09/09 17:37:17 by dchernik          #+#    #+#             */
+/*   Updated: 2025/09/09 17:37:18 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
+
+# include <stdarg.h>
 
 /* It copies the pointers to the passed
  * variables into an array of (void *),
@@ -26,7 +28,7 @@ void	**pack_args(int nargs, ...)
 	int		i;
 
 	pack = (void **)ft_calloc(nargs, sizeof (void *));
-	if (pack == NULL)
+	if (!pack)
 		return (NULL);
 	va_start(vl, nargs);
 	i = 0;

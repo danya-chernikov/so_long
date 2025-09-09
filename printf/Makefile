@@ -2,11 +2,10 @@ CC=cc
 NAME=libftprintf.a
 CFLAGS=-Wall -Werror -Wextra
 
-SRCS=ft_printf.c numeric.c non_numeric.c utils.c packer.c ft_utils.c ft_itoa.c
-
-OBJS=ft_printf.o numeric.o non_numeric.o utils.o packer.o ft_utils.o ft_itoa.o
+OBJS=ft_printf.o numeric.o non_numeric.o utils.o ft_utils.o
 
 $(NAME) : $(OBJS)
+	cd ../libft/ && $(MAKE) all && $(MAKE) bonus
 	ar rcs $(NAME) $(OBJS)
 
 all : $(NAME)
@@ -19,7 +18,19 @@ fclean : clean
 
 re : fclean all
 
-%.o : %.c ft_printf.h
-	$(CC) $(CFLAGS) -c $< -o $@
+ft_printf.o : ft_printf.c ft_printf.h ../libft/libft.h
+	$(CC) $(CFLAGS) -c ft_printf.c
+
+numeric.o : numeric.c ft_printf.h
+	$(CC) $(CFLAGS) -c numeric.c
+
+non_numeric.o : non_numeric.c ft_printf.h
+	$(CC) $(CFLAGS) -c non_numeric.c
+
+utils.o : utils.c ft_printf.h
+	$(CC) $(CFLAGS) -c utils.c
+
+ft_utils.o : ft_utils.c ft_printf.h
+	$(CC) $(CFLAGS) -c ft_utils.c
 
 .PHONY: all clean fclean re

@@ -6,16 +6,23 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 15:51:36 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/08 19:38:48 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/09 13:46:45 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "map.h"
 #include "libft/libft.h"
+
+#include "map.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Reads map file content chunk by chunk
+/* Initializes the map provided by user with
+ * `file_path`.
+ *     1. Checks if the map file extension is correct;
+ *     2. Opens the map file;
+ *     3. Allocates memory for all map file buffer;
+ * Reads map file content chunk by chunk
  * increasing the cnt_size dynamically until
  * all file content will be read.
  *     file_cnt - all map file content;
@@ -24,33 +31,26 @@ int map_init(t_map *map, const char *file_path)
 {
     int     fd;
     int     res;
-    size_t  i;
     size_t  cnt_size;
     char    *file_cnt;
 
-    // Checking if map file extension is correct
     if (!map_check_file_ext(file_path))
     {
         write(STDERR_FILENO, MAP_EXT_ERR_MSG, ft_strlen(MAP_EXT_ERR_MSG));
         return (ERROR_CODE);
     }
-
-    // Let's open the map file
     fd = open(file_path, O_RDONLY);
     if (fd < 0)
     {
-        write(STDERR_FILENO, MAP_OPEN_ERR_MSG, ft_strlen(MAP_OPEN_ERR_MSG));
+        perror(FILE_OPEN_ERR_MSG);
         return (ERROR_CODE);
     }
-
-    // Allocating memory for all map file content buffer
     file_cnt = (char *)malloc(MAP_INC_CHUNK_SIZE * sizeof (char));
     if (!file_cnt)
     {
         write(STDERR_FILENO, MEM_ALLOC_ERR_MSG, ft_strlen(MEM_ALLOC_ERR_MSG));
         return (ERROR_CODE);
-    }
-    
+    }    
     res = map_read_cnt(fd, &file_cnt, &cnt_size);
     if (!res)
     {
@@ -62,124 +62,24 @@ int map_init(t_map *map, const char *file_path)
         write(STDERR_FILENO, MAP_EMPTY_ERR_MSG, ft_strlen(MAP_EMPTY_ERR_MSG));
         return (ERROR_CODE);
     }
-
-    // Let's print all read content
-    ft_printf("\n%s\n", file_cnt);
-    ft_printf("\n%u\n", cnt_size);
-
-    // Let's count how many raws our map has
-    // A valid map must have at least 3 raws
-    //
-    // Let's count new line symbols first
-    //
-    // We remember we may have two situations
-    // '$' here means a new lines symbol
-    //
-    // First situation (we have $ at the end of the last raw)
-    // We get this if we just execute 'echo "1000000001" >> file'
-    // 1111111111$
-    // 1000000001$
-    //
-    // Second situation (we don't have $ at the end of the last raw)
-    // We could get this if we executed 'echo -n "1000000001" >> file'
-    // 1111111111$
-    // 1000000001
-
-    size_t  nls_num; // number of new lines found
-
-    i = 0;
-    nls_num = 1;
-    if (file_cnt[cnt_size - 1] == '\n')
-        --nls_num;
-    while (i < cnt_size)
-    {
-        if (file_cnt[i] == '\n')
-            ++nls_num;
-        ++i;
-    }
-    
-    ft_printf("nls_num = %u\n", nls_num);
-
-    if (nls_num < MAP_MIN_RAWS_NUM)
+    calc_map_height(map, file_cnt, cnt_size);
+    if (map->height < MAP_MIN_RAWS_NUM)
     {
         write(STDERR_FILENO, MAP_MIN_RAWS_ERR_MSG,
             ft_strlen(MAP_MIN_RAWS_ERR_MSG));
         return (ERROR_CODE);
-    }
-
-    // Now let's split all the found new lines into an array
-    i = 0;
-
-    map->height = nls_num;
-    // Allocating memory for the map
-    map->matrix = (char **)malloc(map->height * sizeof (char *));
-    if (!map->matrix)
-    {
-        write(STDERR_FILENO, MEM_ALLOC_ERR_MSG, ft_strlen(MEM_ALLOC_ERR_MSG));
-        return (0);
-    }
-
-    size_t  raw_i;
-    size_t  cnt_i;
-
-    raw_i = 0;
-    cnt_i = 0;
-    while (raw_i < map->height)
-    {
-        i = 0;
-        while (file_cnt[cnt_i] != '\n' && cnt_i < cnt_size)
-        {
-            ++cnt_i;
-            ++i;
-        }
-        ++cnt_i;
-        map->width = i;
-
-        map->matrix[raw_i] = (char *)malloc((map->width + 1) * sizeof (char));
-        if (!map->matrix[raw_i])
-        {
-            --raw_i;
-            while (raw_i > 0)
-            {
-                free(map->matrix[raw_i]);
-                --raw_i;
-            }
-            free(map->matrix[raw_i]);
-            free(map->matrix);
-            write(STDERR_FILENO, MEM_ALLOC_ERR_MSG, ft_strlen(MEM_ALLOC_ERR_MSG));
-            return (ERROR_CODE);
-        }
-
-        // Now let's copy this raw into our matrix
-        size_t  j;
-
-        j = 0;
-        while (j < i)
-        {
-            map->matrix[raw_i][j] = file_cnt[cnt_i - i + j - 1];
-            ++j;
-        }
-        map->matrix[raw_i][j] = '\0';
-
-        ++raw_i;
-    }
+    } 
+    if (!map_split_raws(map, file_cnt, cnt_size))
+        return (ERROR_CODE);
 
     // Printing the map
     for (size_t ri = 0; ri < map->height; ++ri)
         ft_printf("%s\n", map->matrix[ri]);
 
-    // Free all the stuff
-    i = 0;
-    while (i < (size_t)map->height)
-    {
-        free(map->matrix[i]);
-        ++i;
-    }
-    free(map->matrix);
-
+    // Free and close all the stuff
+    map_matrix_free(map);
     free(file_cnt);
     close(fd);
-
     return (SUCCESS_CODE);
 }
 
@@ -227,7 +127,7 @@ int map_read_cnt_chunk(int fd, char **file_cnt, size_t *cnt_size, char **chunk)
     if (rlen <= 0)
     {
         if (rlen < 0)
-            perror(READ_FILE_ERR);
+            perror(FILE_READ_ERR_MSG);
         return (BREAK);
     }
     else
@@ -247,7 +147,8 @@ int map_read_cnt_chunk(int fd, char **file_cnt, size_t *cnt_size, char **chunk)
     return (SUCCESS_CODE);
 }
 
-/* Copies `size` bytes of content from `src` into `dst` starting with `offest` */
+/* Copies `size` bytes of content from `src` into
+ * `dst` starting with `offest` */
 void    copy_content(char *dst, const char *src,
             const size_t size, const size_t offset)
 {
@@ -261,17 +162,39 @@ void    copy_content(char *dst, const char *src,
     }
 }
 
-void    map_free(t_map *map)
+/* Determines the map's height, i.e. the number of rows that the
+ * map consists of.
+ * A valid map must have at least 3 raws.
+ * Let's count new line symbols first.
+ *     nld_num - number of new lines found
+ *         
+ * We remember we may have two situations:
+ * ('$' here means a new lines symbol)
+ *     First situation: we have $ at the end of the last raw
+ *         We get this if we just execute 'echo "1000000001" >> file'
+ *             1111111111$
+ *             1000000001$
+ *         Second situation: we don't have $ at the end of the last raw
+ *             We could get this if we executed 'echo -n "1000000001" >> file'
+ *                 1111111111$
+ *                 1000000001
+ */
+void    calc_map_height(t_map *map, char *file_cnt, size_t cnt_size)
 {
+    size_t  nls_num;
     size_t  i;
 
     i = 0;
-    while (i < map->height)
+    nls_num = 1;
+    if (file_cnt[cnt_size - 1] == '\n')
+        --nls_num;
+    while (i < cnt_size)
     {
-        free(map->matrix[i]);
+        if (file_cnt[i] == '\n')
+            ++nls_num;
         ++i;
-    }
-    free(map->matrix);
+    } 
+    map->height = nls_num;
 }
 
 /* Checks if map provided by the user in argv[1]
@@ -297,6 +220,88 @@ int map_check_file_ext(const char *file_path)
         ++i;
     }
     return (SUCCESS_CODE);
+}
+
+/* Splits and copies each row from the map file content into the
+ * map matrix. By 'row', we mean a substring located between
+ * newline characters */
+int map_split_raws(t_map *map, char *file_cnt, size_t cnt_size)
+{
+    size_t  line_len;
+    size_t  raw_i;
+    size_t  cnt_i;
+
+    map->matrix = (char **)malloc(map->height * sizeof (char *));
+    if (!map->matrix)
+    {
+        write(STDERR_FILENO, MEM_ALLOC_ERR_MSG, ft_strlen(MEM_ALLOC_ERR_MSG));
+        return (ERROR_CODE);
+    }
+    raw_i = 0;
+    cnt_i = 0;
+    while (raw_i < map->height)
+    {
+        line_len = 0;
+        while (file_cnt[cnt_i] != '\n' && cnt_i < cnt_size)
+        {
+            ++cnt_i;
+            ++line_len;
+        }
+        ++cnt_i;
+        map->width = line_len;
+        map->matrix[raw_i] = (char *)malloc((map->width + 1) * sizeof (char));
+        if (!map->matrix[raw_i])
+        {
+            --raw_i;
+            while (raw_i > 0)
+            {
+                free(map->matrix[raw_i]);
+                --raw_i;
+            }
+            free(map->matrix[raw_i]);
+            free(map->matrix);
+            write(STDERR_FILENO, MEM_ALLOC_ERR_MSG, ft_strlen(MEM_ALLOC_ERR_MSG));
+            return (ERROR_CODE);
+        }
+        map_copy_raw_into_matrix(map, file_cnt,
+            pack_args(3, (void *)&raw_i, (void *)&cnt_i, (void *)&line_len));
+        ++raw_i;
+    } // while (raw_i < map->height)
+    return (SUCCESS_CODE);
+}
+
+/* Now let's copy this raw into our matrix */
+void    map_copy_raw_into_matrix(t_map *map, char *file_cnt, void **pack)
+{
+    size_t  j;
+    size_t  raw_i;
+    size_t  cnt_i;
+    size_t  line_len;
+    
+    raw_i = *(size_t *)pack[0];
+    cnt_i = *(size_t *)pack[1];
+    line_len = *(size_t *)pack[2];
+    j = 0;
+    while (j < line_len)
+    {
+        map->matrix[raw_i][j] = file_cnt[cnt_i - line_len + j - 1];
+        ++j;
+    }
+    map->matrix[raw_i][j] = '\0';
+    free(pack);
+}
+
+void    map_matrix_free(t_map *map)
+{
+    size_t  i;
+
+    i = 0;
+    while (i < map->height)
+    {
+        free(map->matrix[i]);
+        ++i;
+    }
+    free(map->matrix);
 }
 
 /* First checks map file extension */

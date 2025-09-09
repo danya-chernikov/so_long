@@ -6,12 +6,14 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 04:34:51 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/04 16:41:23 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/09 17:36:41 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
+
+#include "../libft/libft.h"
 
 # include <stdarg.h>
 # include <stddef.h>
@@ -41,17 +43,8 @@ char	*reverse_str(char *str);
 int		is_conv(char ch);
 int		count_digits(long long n);
 
-/* packer.c */
-void	**pack_args(int nargs, ...);
-
 /* ft_utils.c */
-size_t	ft_strlength(const char *str);
-void	ft_bzero(void *s, size_t n);
-void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_putstring_fd(char *s, int fd);
 char	*ft_itoa_pos(unsigned int n);
-
-/* ft_itoa.c */
-char	*ft_itoa(int n);
 
 #endif

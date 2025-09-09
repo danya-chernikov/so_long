@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 04:35:07 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/04 16:38:07 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/09 13:47:35 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	nbr_conv(va_list *vl)
 		num_str = ft_itoa(int_arg);
 		if (num_str == NULL)
 			return (-1);
-		len = ft_strlength(num_str);
+		len = ft_strlen(num_str);
 		if (write(1, num_str, len) == -1)
 			return (-1);
 		free(num_str);
@@ -65,7 +65,7 @@ int	u_nbr_conv(va_list *vl)
 		num_str = ft_itoa_pos(uint_arg);
 		if (num_str == NULL)
 			return (-1);
-		len = ft_strlength(num_str);
+		len = ft_strlen(num_str);
 		if (write(1, num_str, len) == -1)
 			return (-1);
 		free(num_str);
@@ -107,7 +107,7 @@ int	hex_not_zero(unsigned int hex_arg, int dcase, int *len)
 		hexnum_str = int_to_hex(hex_arg, 2);
 	if (hexnum_str == NULL)
 		return (-1);
-	*len = ft_strlength(hexnum_str);
+	*len = ft_strlen(hexnum_str);
 	if (ft_putstring_fd(hexnum_str, 1) == -1)
 		return (-1);
 	free(hexnum_str);

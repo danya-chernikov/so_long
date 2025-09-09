@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/09 16:50:45 by dchernik          #+#    #+#             */
+/*   Updated: 2025/09/09 16:50:46 by dchernik         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MAP_H
 # define MAP_H
 
@@ -21,16 +33,17 @@
 #define MAP_FILE_EXTENSION          ".ber"
 
 /* Error messages */
-#define MEM_ALLOC_ERR_MSG           "Memory allocation error\n"
 /* Map error messages */
-#define MAP_OPEN_ERR_MSG            "Cound not open the map file\n"
 #define MAP_EXT_ERR_MSG             "Map file extension is invalid\n"
 #define MAP_RECT_ERR_MSG            "Map format error: map must be rectangular\n"
 #define MAP_EMPTY_RAW_ERR_MSG       "Map format error: map cannot contain empty raws\n"
 #define MAP_EMPTY_ERR_MSG           "Map format error: map file is empty\n"
 #define MAP_MIN_RAWS_ERR_MSG        "Map format error: map has to contain at least 3 raws\n"
-/* System error messages */
-#define READ_FILE_ERR               "read()"
+
+/* System error messages ( for using with perror() ) */
+#define MEM_ALLOC_ERR_MSG           "malloc()"
+#define FILE_OPEN_ERR_MSG           "open()"
+#define FILE_READ_ERR_MSG           "read()"
 
 /* Exit codes
  *     ERROR         - denotes a general error (which may
@@ -53,16 +66,17 @@ typedef struct  s_map
 }   t_map;
 
 int     map_init(t_map *map, const char *file_path);
-
+int     map_check_file_ext(const char *file_path);
 int     map_read_cnt(int fd, char **file_cnt, size_t *cnt_size);
 int     map_read_cnt_chunk(int fd, char **file_cnt,
             size_t *cnt_size, char **chunk);
-
-int     map_check_file_ext(const char *file_path);
-int     map_check(const t_map *map);
-void    map_free(t_map *map);
-
 void    copy_content(char *dst, const char *src,
             const size_t size, const size_t offset);
+void    calc_map_height(t_map *map, char *file_cnt, size_t cnt_size);
+int     map_split_raws(t_map *map, char *file_cnt, size_t cnt_size);
+void    map_copy_raw_into_matrix(t_map *map, char *file_cnt, void **pack);
+void    map_matrix_free(t_map *map);
+
+int     map_check(const t_map *map);
 
 #endif

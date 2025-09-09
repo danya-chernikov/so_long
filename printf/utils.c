@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 04:35:00 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/04 16:43:31 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/09 13:53:15 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*reverse_str(char *str)
 	char	tmp;
 
 	i = 0;
-	slen = ft_strlength(str);
+	slen = ft_strlen(str);
 	while (i < slen >> 1)
 	{
 		tmp = str[i];
