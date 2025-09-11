@@ -6,13 +6,12 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 17:37:17 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/09 17:37:18 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/10 16:14:13 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-# include <stdarg.h>
+#include <stdarg.h>
 
 /* It copies the pointers to the passed
  * variables into an array of (void *),

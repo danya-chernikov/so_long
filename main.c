@@ -6,48 +6,48 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:38 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/09 16:50:40 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/11 15:08:24 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map.h"
-
 #include "libx/mlx.h"
-
 #include <stdlib.h>
 
 int	main(int argc, char *argv[])
 {
 	void	*mlx;
 	void	*mlx_win;
-    t_map   map;
+	t_map	map;
 
 	if (argc != 2)
 	{
-		ft_printf("%s", "You need to specify the path to the game's map\n");
+		write(STDERR_FILENO, MAP_PATH_ERR_MSG, ft_strlen(MAP_PATH_ERR_MSG));
 		exit(EXIT_FAILURE);
 	}
+	if (!map_init(&map, argv[1]))
+	{
+		return (EXIT_FAILURE);
+	}
+	if (!map_check(&map))
+		return (EXIT_FAILURE);
 
-    if (!map_init(&map, argv[1]))
-    {
-        return (EXIT_FAILURE);
-    }
-	map_check(&map);
+	map_print(&map);
 
 	mlx = mlx_init();
-	if (mlx == NULL)
+	if (!mlx)
 	{
-		ft_printf("%s", "mlx_init(): Failed to initialize mlx\n");
+		write(STDERR_FILENO, MLX_INIT_ERR_MSG, ft_strlen(MLX_INIT_ERR_MSG));
 		exit(EXIT_FAILURE);
 	}
-
 	mlx_win = mlx_new_window(mlx, 1280, 720, "Just a window");
-	if (mlx_win == NULL)
+	if (!mlx_win)
 	{
-		ft_printf("%s", "mlx_new_window(): Cannot create a window\n");
+		write(STDERR_FILENO, MLX_WIN_CREATE_ERR_MSG,
+			ft_strlen(MLX_WIN_CREATE_ERR_MSG));
 		exit(EXIT_FAILURE);
 	}
 	mlx_loop(mlx);
-
+    map_matrix_free(&map);
 	return (EXIT_SUCCESS);
 }

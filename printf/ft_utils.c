@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 04:54:19 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/09 13:53:33 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/10 16:08:19 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 int	ft_putstring_fd(char *s, int fd)
 {
-	size_t  slen;
+	size_t	slen;
 
 	slen = ft_strlen(s);
 	if (write(fd, s, slen) == -1)
