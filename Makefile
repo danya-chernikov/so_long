@@ -37,7 +37,7 @@ fclean : clean
 
 re : fclean all
 
-main.o : main.c map.h libx/mlx.h
+main.o : main.c map.h libx/mlx.h graphics.h
 	$(CC) $(CFLAGS) -I/usr/include -c main.c
 
 map_checker.o : map_checker.c map.h $(LIBFT_HEADER)

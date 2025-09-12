@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 20:46:05 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/10 21:34:27 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/12 18:51:31 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void    map_copy_raw_into_matrix(t_map *map, char *file_cnt, void **pack)
 
 void    map_matrix_free(t_map *map)
 {
+	ft_printf("map_matrix_free()\n");
     size_t  i;
 
     i = 0;
