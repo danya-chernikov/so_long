@@ -18,7 +18,7 @@ CFLAGS=-Wall -Werror -Wextra -O0 -g3
 # /usr/bin/ld: printf/libftprintf.a(non_numeric.o): warning: relocation in read-only section `.text'
 # /usr/bin/ld: warning: creating DT_TEXTREL in a PIE
 
-OBJS=main.o map_checker.o map_checker2.o map_checker3.o
+OBJS=main.o map_checker.o map_checker2.o map_checker3.o colors.o
 
 
 $(NAME) : $(OBJS)
@@ -41,12 +41,15 @@ main.o : main.c map.h libx/mlx.h
 	$(CC) $(CFLAGS) -I/usr/include -c main.c
 
 map_checker.o : map_checker.c map.h $(LIBFT_HEADER)
-	$(CC) $(CFLAGS) -I/usr/include -c map_checker.c
+	$(CC) $(CFLAGS) -c map_checker.c
 
 map_checker2.o : map_checker2.c map.h $(LIBFT_HEADER)
-	$(CC) $(CFLAGS) -I/usr/include -c map_checker2.c
+	$(CC) $(CFLAGS) -c map_checker2.c
 
 map_checker3.o : map_checker3.c map.h $(LIBFT_HEADER)
-	$(CC) $(CFLAGS) -I/usr/include -c map_checker3.c
+	$(CC) $(CFLAGS) -c map_checker3.c
+
+colors.o : colors.c
+	$(CC) $(CFLAGS) -c colors.c
 
 .PHONY: all clean fclean re

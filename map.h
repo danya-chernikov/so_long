@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:45 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/11 15:07:24 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/12 14:10:04 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,39 @@
  * `all_file_cnt` array  will be increased
  * during each subsequent  memory reallocation */
 #define MAP_INC_CHUNK_SIZE          8192
+
+/* If the window created from the map
+ * resources has a width and/or height
+ * smaller than this, we simply leave it
+ * as it is and do nothing. If the user
+ * wants to increase the window size,
+ * they will see black areas filling the
+ * empty space. If the window created from
+ * the map resources is larger than these
+ * defaults, map scrolling will appear */
+#define WIN_DEFAULT_WIDTH			1280
+#define WIN_DEFAULT_HEIGHT			720
+
+/* Minimum number of rows and columns
+ * a map can consist of */
 #define MAP_MIN_RAWS_NUM            3
 #define MAP_MIN_COLUMNS_NUM         3
+
+#define GAME_NAME					"LITTLE-DOLPHIN-PARTIZAN"
 #define MAP_FILE_EXTENSION          ".ber"
 
 /* Error messages */
 /* Map error messages */
-#define MAP_PATH_ERR_MSG			"You need to specify the path to the game's map\n"
-#define MAP_EXT_ERR_MSG             "Map file extension is invalid\n"
-#define MAP_RECT_ERR_MSG            "Map format error: map must be rectangular\n"
-#define MAP_EMPTY_RAW_ERR_MSG       "Map format error: map cannot contain empty raws\n"
-#define MAP_EMPTY_ERR_MSG           "Map format error: map file is empty\n"
-#define MAP_MIN_RAWS_ERR_MSG        "Map format error: map has to contain at least 3 raws\n"
+#define MAP_PATH_ERR_MSG			"Error\nYou need to specify the path to the game's map\n"
+#define MAP_EXT_ERR_MSG             "Error\nMap file extension is invalid\n"
+#define MAP_RECT_ERR_MSG            "Error\nMap format error: map must be rectangular\n"
+#define MAP_EMPTY_RAW_ERR_MSG       "Error\nMap format error: map cannot contain empty raws\n"
+#define MAP_EMPTY_ERR_MSG           "Error\nMap format error: map file is empty\n"
+#define MAP_MIN_RAWS_ERR_MSG        "Error\nMap format error: map has to contain at least 3 raws\n"
 
 /* MLX library error messages */
-#define MLX_INIT_ERR_MSG			"mlx_init(): Failed to initialize mlx\n"
-#define MLX_WIN_CREATE_ERR_MSG		"mlx_new_window(): Cannot create a window\n"
+#define MLX_INIT_ERR_MSG			"Error\nmlx_init(): Failed to initialize mlx\n"
+#define MLX_WIN_CREATE_ERR_MSG		"Error\nmlx_new_window(): Cannot create a window\n"
 
 /* System error messages ( for using with perror() ) */
 #define MEM_ALLOC_ERR_MSG           "malloc()"

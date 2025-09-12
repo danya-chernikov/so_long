@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:38 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/11 15:08:24 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/11 20:12:04 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char *argv[])
 		write(STDERR_FILENO, MLX_INIT_ERR_MSG, ft_strlen(MLX_INIT_ERR_MSG));
 		exit(EXIT_FAILURE);
 	}
-	mlx_win = mlx_new_window(mlx, 1280, 720, "Just a window");
+	mlx_win = mlx_new_window(mlx, WIN_DEFAULT_WIDTH, WIN_DEFAULT_HEIGHT, GAME_NAME);
 	if (!mlx_win)
 	{
 		write(STDERR_FILENO, MLX_WIN_CREATE_ERR_MSG,
