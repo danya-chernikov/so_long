@@ -6,30 +6,31 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:38 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/12 18:54:28 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/12 19:17:51 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "map.h"
-#include "key_codes.h"
 #include "game_logic.h"
+#include "graphics.h"
 #include "libx/mlx.h"
 #include <stdlib.h>
 
 int	close_win_esc(int keycode, t_game_data *gdata)
 {
 	if (keycode == KEY_ESC)
+	{
 		mlx_destroy_window(gdata->mlx, gdata->mlx_win);
-	map_matrix_free(&gdata->map);
-	exit (EXIT_SUCCESS);
-	return (0);
+		map_matrix_free(&gdata->map);
+		exit (EXIT_SUCCESS);
+	}
+	return (SUCCESS_CODE);
 }
 
 int	close_win_redcross(t_game_data *gdata)
 {
 	map_matrix_free(&gdata->map);
 	exit (EXIT_SUCCESS);
-	return (0);
+	return (SUCCESS_CODE);
 }
 
 int	main(int argc, char *argv[])

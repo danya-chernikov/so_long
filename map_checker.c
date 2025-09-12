@@ -6,13 +6,13 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 15:51:36 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/11 15:09:30 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/12 19:03:54 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /* We need stdio.h for perror */
 #include "libft/libft.h"
-#include "map.h"
+#include "game_logic.h"
 #include <stdio.h>
 #include <stdlib.h>
 

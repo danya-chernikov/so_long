@@ -6,12 +6,12 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 20:46:05 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/12 18:51:31 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/12 19:03:54 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
-#include "map.h"
+#include "game_logic.h"
 #include <stdlib.h>
 
 /* Now let's copy this raw into our matrix */

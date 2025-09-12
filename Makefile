@@ -37,19 +37,19 @@ fclean : clean
 
 re : fclean all
 
-main.o : main.c map.h libx/mlx.h graphics.h
+main.o : main.c libx/mlx.h game_logic.h graphics.h
 	$(CC) $(CFLAGS) -I/usr/include -c main.c
 
-map_checker.o : map_checker.c map.h $(LIBFT_HEADER)
+map_checker.o : map_checker.c game_logic.h $(LIBFT_HEADER)
 	$(CC) $(CFLAGS) -c map_checker.c
 
-map_checker2.o : map_checker2.c map.h $(LIBFT_HEADER)
+map_checker2.o : map_checker2.c game_logic.h $(LIBFT_HEADER)
 	$(CC) $(CFLAGS) -c map_checker2.c
 
-map_checker3.o : map_checker3.c map.h $(LIBFT_HEADER)
+map_checker3.o : map_checker3.c game_logic.h $(LIBFT_HEADER)
 	$(CC) $(CFLAGS) -c map_checker3.c
 
-colors.o : colors.c
+colors.o : colors.c graphics.h
 	$(CC) $(CFLAGS) -c colors.c
 
 .PHONY: all clean fclean re
