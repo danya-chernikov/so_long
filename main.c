@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:38 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/12 19:17:51 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/12 19:42:42 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,10 @@ int	close_win_redcross(t_game_data *gdata)
 	return (SUCCESS_CODE);
 }
 
+/* To start the game, press any
+ * valid key to move your dolphin
+ * in the desired direction
+ * (W–up, D–right, S–down, A–left) */
 int	main(int argc, char *argv[])
 {
 	t_game_data	gdata;
