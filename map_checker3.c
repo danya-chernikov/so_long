@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 20:46:05 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/12 19:03:54 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/17 15:45:20 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,26 @@ void	map_print(t_map *map)
         ft_printf("%s\n", map->matrix[i]);
 		++i;
 	}
+}
+
+int		get_collect_num(t_map *map)
+{
+	int		cnum;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	cnum = 0;
+	while (i < map->height)
+	{	
+		j = 0;
+		while (j < map->width)
+		{
+			if (map->matrix[j][i] == 'C')
+				++cnum;
+			++j;
+		}
+		++i;
+	}
+	return (cnum);
 }

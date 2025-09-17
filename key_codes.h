@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 19:43:11 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/12 19:43:12 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/16 21:53:39 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,5 @@
 #define	KEY_SLASH		47
 #define	KEY_SPACE		32
 #define	KEY_ENTER		65293
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:45 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/12 19:07:48 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/16 22:09:09 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ void    map_copy_raw_into_matrix(t_map *map, char *file_cnt, void **pack);
 void    map_matrix_free(t_map *map);
 int     map_check(t_map *map);
 void	map_print(t_map *map);
+int		get_collect_num(t_map *map);
 
 #endif

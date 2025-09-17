@@ -18,7 +18,7 @@ CFLAGS=-Wall -Werror -Wextra -O0 -g3
 # /usr/bin/ld: printf/libftprintf.a(non_numeric.o): warning: relocation in read-only section `.text'
 # /usr/bin/ld: warning: creating DT_TEXTREL in a PIE
 
-OBJS=main.o map_checker.o map_checker2.o map_checker3.o colors.o
+OBJS=main.o map_checker.o map_checker2.o map_checker3.o game_logic.o input.o render.o
 
 
 $(NAME) : $(OBJS)
@@ -37,7 +37,7 @@ fclean : clean
 
 re : fclean all
 
-main.o : main.c libx/mlx.h game_logic.h graphics.h
+main.o : main.c game_logic.h
 	$(CC) $(CFLAGS) -I/usr/include -c main.c
 
 map_checker.o : map_checker.c game_logic.h $(LIBFT_HEADER)
@@ -49,7 +49,13 @@ map_checker2.o : map_checker2.c game_logic.h $(LIBFT_HEADER)
 map_checker3.o : map_checker3.c game_logic.h $(LIBFT_HEADER)
 	$(CC) $(CFLAGS) -c map_checker3.c
 
-colors.o : colors.c graphics.h
-	$(CC) $(CFLAGS) -c colors.c
+game_logic.o : game_logic.c libx/mlx.h map.h key_codes.h
+	$(CC) $(CFLAGS) -c game_logic.c
+
+input.o : input.c game_logic.h
+	$(CC) $(CFLAGS) -c input.c
+
+render.o : render.c game_logic.h
+	$(CC) $(CFLAGS) -c render.c
 
 .PHONY: all clean fclean re
