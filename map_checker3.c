@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 20:46:05 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/17 15:45:20 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/18 00:56:09 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int		get_collect_num(t_map *map)
 		j = 0;
 		while (j < map->width)
 		{
-			if (map->matrix[j][i] == 'C')
+			if (map->matrix[i][j] == 'C')
 				++cnum;
 			++j;
 		}
