@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 19:42:57 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/17 17:53:53 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/18 01:49:18 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 #define WIN_DEFAULT_WIDTH		1280
 #define WIN_DEFAULT_HEIGHT		720
 #define TILE_SIZE				64
-#define MOVE_SPEED				4 /* pixels per frame */
+#define MOVE_SPEED				1 /* pixels per frame */
 
 /* MLX library error messages */
 #define MLX_INIT_ERR_MSG		"Error\nmlx_init(): Failed to initialize mlx\n"
@@ -85,6 +85,7 @@ typedef struct	s_game_data
 	t_img	sea;
 	t_img	wall;
 	t_img	mine;
+	t_img	exit;
 	t_img	dolphin_up;
 	t_img	dolphin_right;
 	t_img	dolphin_down;

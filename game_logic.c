@@ -43,6 +43,8 @@ int	game_init(t_game_data *gdata, const char *map_path)
 		return (ERROR_CODE);
 	if (!load_image(gdata, &gdata->mine, "textures/mines/mine_64x64.xpm"))
 		return (ERROR_CODE);
+	if (!load_image(gdata, &gdata->exit, "textures/exit/skull_64x64.xpm"))
+		return (ERROR_CODE);
 	if (!load_image(gdata, &gdata->dolphin_up, "textures/dolphins/dolphin_up_64x32.xpm"))
 		return (ERROR_CODE);
 	if (!load_image(gdata, &gdata->dolphin_right, "textures/dolphins/dolphin_right_64x32.xpm"))

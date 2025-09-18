@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 17:04:17 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/17 17:17:47 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/18 01:51:04 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,39 +139,62 @@ int	render_frame(t_game_data *gdata)
 		return (0);
 	update_player(gdata);
 
-	/* Determine visible tile range */
-	int	x0 = gdata->cam_x / TILE_SIZE;
-	int	y0 = gdata->cam_y / TILE_SIZE;
-	int	x1 = (gdata->cam_x + gdata->win_w) / TILE_SIZE;
-	int	y1 = (gdata->cam_y + gdata->win_h) / TILE_SIZE;
-	if (x0 < 0)
-		x0 = 0;
-	if (y0 < 0)
-		y0 = 0;
-	if (x1 >= (int)gdata->map.width)
-		x1 = gdata->map.width - 1;
-	if (y1 >= (int)gdata->map.height)
-		y1 = gdata->map.height - 1;
+	/* Determine visible tile range.
+	 * Expanded visible tile range so
+	 * we always cover the whole window */
+	int	x0 = (gdata->cam_x / TILE_SIZE) - 1;
+	int	y0 = (gdata->cam_y / TILE_SIZE) - 1;
+	int	x1 = ((gdata->cam_x + gdata->win_w) / TILE_SIZE) + 1;
+	int	y1 = ((gdata->cam_y + gdata->win_h) / TILE_SIZE) + 1;
 
-	/* Draw tiles */
-	y = y0;	
+	/* Draw sea everywhere inside that range (this fills margins) */
+	y = y0;
 	while (y <= y1)
 	{
 		x = x0;
 		while (x <= x1)
 		{
+			px = x * TILE_SIZE;	
+			py = y * TILE_SIZE;
+			/* Sea tiled even outside map bounds
+			 * (mlx allows negative coords) */
+			mlx_put_image_to_window(gdata->mlx, gdata->mlx_win,
+				gdata->sea.img, px - gdata->cam_x, py - gdata->cam_y);
+			++x;
+		}
+		++y;
+	}
+
+	/* Draw objects only where tiles exist */
+	int	mx0 = x0 < 0 ? 0 : x0;
+	int	my0 = y0 < 0 ? 0 : y0;
+	int	mx1 = x1 >= (int)gdata->map.width ? (int)gdata->map.width - 1 : x1;
+	int	my1 = y1 >= (int)gdata->map.height ? (int)gdata->map.height - 1 : y1;
+
+	/* Draw tiles */
+	y = my0;	
+	while (y <= my1)
+	{
+		x = mx0;
+		while (x <= mx1)
+		{
 			px = x * TILE_SIZE;
 			py = y * TILE_SIZE;
-			/* Sea first */
-			draw_tile(gdata, &gdata->sea, px, py);
 			char t = gdata->map.matrix[y][x];
 			if (t == '1')
-				draw_tile(gdata, &gdata->wall, px, py);
+			{
+				mlx_put_image_to_window(gdata->mlx, gdata->mlx_win,
+					gdata->wall.img, px - gdata->cam_x, py - gdata->cam_y);
+			}
 			else if (t == 'C')
-				draw_tile(gdata, &gdata->mine, px, py);
+			{
+				mlx_put_image_to_window(gdata->mlx, gdata->mlx_win,
+					gdata->mine.img, px - gdata->cam_x, py - gdata->cam_y);
+			}
 			else if (t == 'E')
 			{
-				/* Draw exit as sea for now - user may add special XPM */
+				mlx_put_image_to_window(gdata->mlx, gdata->mlx_win,
+					gdata->exit.img, px - gdata->cam_x, py - gdata->cam_y);
 			}
 			++x;
 		}
@@ -188,8 +211,9 @@ int	render_frame(t_game_data *gdata)
 		dimg = &gdata->dolphin_down;
 	else if (gdata->dir == DIR_LEFT)
 		dimg = &gdata->dolphin_left;
-
-	draw_tile(gdata, dimg, gdata->player_px, gdata->player_py);
+	
+	mlx_put_image_to_window(gdata->mlx, gdata->mlx_win, dimg->img,
+		gdata->player_px - gdata->cam_x, gdata->player_py - gdata->cam_y);
 
 	return (0);
 }
