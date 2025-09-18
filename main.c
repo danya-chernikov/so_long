@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:38 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/17 17:21:38 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/18 05:52:41 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	main(int argc, char *argv[])
 {
 	t_game_data	gdata;
 
+	ft_bzero(&gdata.map, sizeof (t_game_data));
 	if (argc != 2)
 	{
 		write(STDERR_FILENO, MAP_PATH_ERR_MSG, ft_strlen(MAP_PATH_ERR_MSG));

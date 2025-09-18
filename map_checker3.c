@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 20:46:05 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/18 00:56:09 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/18 05:38:06 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,9 @@ void    map_matrix_free(t_map *map)
 int map_check(t_map *map)
 {
 	(void)map;	
-	// Printing the map
+
 	ft_printf("%s\n", "checking the map...");
+
 	return (SUCCESS_CODE);
 }
 

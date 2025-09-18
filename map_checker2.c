@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 20:23:54 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/12 19:03:54 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/18 05:59:03 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,9 @@ int map_detect_raw(t_map *map, char *file_cnt, size_t cnt_size, void **pack)
     raw_i = (size_t *)pack[0];
     cnt_i = (size_t *)pack[1];
     line_len = (size_t *)pack[2];
-
     *line_len = map_calc_raw_width(map, file_cnt, cnt_size, cnt_i);
+	if (*line_len == 0)
+		return (ERROR_CODE);
     map->matrix[*raw_i] = (char *)malloc((map->width + 1) * sizeof (char));
     if (!map->matrix[*raw_i])
     {
@@ -122,7 +123,11 @@ int map_detect_raw(t_map *map, char *file_cnt, size_t cnt_size, void **pack)
 }
 
 /* Calculates the length of the next line of the map
- * that is currently being parsed */
+ * currently being parsed. This function also checks
+ * whether the map remains rectangular by comparing
+ * the length of the newly read line with the length
+ * of the previously read line. If the map is rectangular,
+ * these values must not differ */
 size_t  map_calc_raw_width(t_map *map, char *file_cnt,
     size_t cnt_size, size_t *cnt_i)
 {
@@ -135,6 +140,12 @@ size_t  map_calc_raw_width(t_map *map, char *file_cnt,
         ++line_len;
     }
     ++(*cnt_i);
+	ft_printf("line_len = %u\n", line_len);
+	if (map->width != line_len)
+	{
+        write(STDERR_FILENO, MAP_RECT_ERR_MSG, ft_strlen(MAP_RECT_ERR_MSG));
+		return (ERROR_CODE);
+	}
     map->width = line_len;
     return (line_len);
 }
