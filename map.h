@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:45 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/19 15:15:18 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/19 17:20:37 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,29 @@
 #define MAP_MIN_RAWS_NUM            3
 #define MAP_MIN_COLUMNS_NUM         3
 
+/* MAP_OBJECTS_NUM – the number of different
+ * objects from which a map can be composed */
 #define MAP_FILE_EXTENSION          ".ber"
+#define MAP_OBJECTS_NUM				5
+#define MAP_SEA_SYMBOL				'0'
+#define MAP_WALL_SYMBOL				'1'
+#define MAP_COLLECT_SYMBOL			'C'
+#define MAP_PLAYER_POS_SYMBOL		'P'
+#define MAP_EXIT_SYMBOL				'E'
 
 /* Error messages */
 /* Map error messages */
-#define MAP_PATH_ERR_MSG			"Error\nYou need to specify the path to the game's map\n"
+#define MAP_PATH_ERR_MSG			"Error\nYou need to specify the path to the game map\n"
 #define MAP_EXT_ERR_MSG             "Error\nMap file extension is invalid\n"
 #define MAP_RECT_ERR_MSG            "Error\nMap must be rectangular\n"
-#define MAP_EMPTY_RAW_ERR_MSG       "Error\nMap cannot contain empty raws\n"
+#define MAP_EMPTY_RAW_ERR_MSG       "Error\nMap cannot contain empty rows\n"
 #define MAP_EMPTY_ERR_MSG           "Error\nMap file is empty\n"
-#define MAP_MIN_RAWS_ERR_MSG        "Error\nMap has to contain at least 3 raws\n"
-#define MAP_MUST_BE_CLOSED_ERR_MSG	"Error\nMap must be closed\n"
+#define MAP_MIN_RAWS_ERR_MSG        "Error\nMap has to contain at least 3 rows\n"
+#define MAP_INVALID_SYMBOL_ERR_MSG	"Error\nMap contains an invalid symbol\n"
+#define MAP_MUST_BE_CLOSED_ERR_MSG	"Error\nMap must be enclosed\n"
+#define MAP_DUPLICATES_ERR_MSG		"Error\nThe map must have exactly one exit and one initial player position\n"
+#define MAP_AT_LEAST_1_COL_ERR_MSG	"Error\nMap must contain at least one collectible object\n"
+#define MAP_NO_WAY_TO_EXIT_ERR_MSG	"Error\nMap does not have a valid path to exit\n"
 
 typedef struct  s_map
 {
@@ -74,11 +86,14 @@ size_t  map_calc_raw_width(t_map *map, char *file_cnt,
 /* map_checker3.c */
 void    map_copy_raw_into_matrix(t_map *map, char *file_cnt, void **pack);
 void    map_matrix_free(t_map *map);
-void	map_print(t_map *map);
-int		get_collect_num(t_map *map);
-int     map_check(t_map *map);
+void	map_print(const t_map *map);
+int		map_get_collect_num(const t_map *map);
+int     map_check(const t_map *map);
 
 /* map_checker4.c */
-int		map_check_if_closed(t_map *map);
+int		map_check_cnt_is_valid(const t_map *map);
+int		map_check_if_closed(const t_map *map);
+int		map_check_duplicates(const t_map *map);
+int		map_check_exit(const t_map *map);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 19:42:57 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/19 15:36:52 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/19 15:51:33 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,15 @@
 #define WIN_DEFAULT_HEIGHT		1080
 #define TILE_SIZE				128
 #define MOVE_SPEED				1 /* pixels per frame */
+
+#define TEXTURE_SEA_PATH		"textures/water/water_1_128x128.xpm"
+#define TEXTURE_WALL_PATH		"textures/rocks/rock_1_128x128.xpm"
+#define TEXTURE_MINE_PATH		"textures/mines/mine_128x128.xpm"
+#define TEXTURE_EXIT_PATH		"textures/exit/skull_128x128.xpm"
+#define TEXTURE_DOLP_UP_PATH	"textures/dolphins/dolphin_up_128x64.xpm"
+#define TEXTURE_DOLP_RIGHT_PATH	"textures/dolphins/dolphin_right_128x64.xpm"
+#define TEXTURE_DOLP_DOWN_PATH	"textures/dolphins/dolphin_down_128x64.xpm"
+#define TEXTURE_DOLP_LEFT_PATH	"textures/dolphins/dolphin_left_128x64.xpm"
 
 /* MLX library error messages */
 #define MLX_INIT_ERR_MSG		"Error\nmlx_init(): Failed to initialize mlx\n"
@@ -115,6 +124,7 @@ int		game_cleanup(t_game_data *data);
 int		load_image(t_game_data *gdata, t_img *out, const char *path);
 void	find_player(t_game_data *gdata);
 void	game_loop(t_game_data *gdata);
+int		load_images(t_game_data *gdata);
 
 /* input.c */
 void	start_moving(t_game_data *gdata, t_dir d);

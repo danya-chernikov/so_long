@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 20:46:05 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/19 15:17:16 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/19 17:26:03 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void    map_matrix_free(t_map *map)
     free(map->matrix);
 }
 
-void	map_print(t_map *map)
+void	map_print(const t_map *map)
 {
 	size_t	i;
 
@@ -60,7 +60,7 @@ void	map_print(t_map *map)
 	}
 }
 
-int		get_collect_num(t_map *map)
+int	map_get_collect_num(const t_map *map)
 {
 	int		cnum;
 	size_t	i;
@@ -73,7 +73,7 @@ int		get_collect_num(t_map *map)
 		j = 0;
 		while (j < map->width)
 		{
-			if (map->matrix[i][j] == 'C')
+			if (map->matrix[i][j] == MAP_COLLECT_SYMBOL)
 				++cnum;
 			++j;
 		}
@@ -82,15 +82,36 @@ int		get_collect_num(t_map *map)
 	return (cnum);
 }
 
-/* First checks map file extension */
-int map_check(t_map *map)
+int	map_check(const t_map *map)
 {
-	(void)map;	
-
+	if (!map_check_cnt_is_valid(map))
+	{
+        write(STDERR_FILENO, MAP_INVALID_SYMBOL_ERR_MSG,
+			ft_strlen(MAP_INVALID_SYMBOL_ERR_MSG));
+		return (ERROR_CODE);
+	}
 	if (!map_check_if_closed(map))
 	{
         write(STDERR_FILENO, MAP_MUST_BE_CLOSED_ERR_MSG,
 			ft_strlen(MAP_MUST_BE_CLOSED_ERR_MSG));
+		return (ERROR_CODE);
+	}
+	if (!map_check_duplicates(map))
+	{
+        write(STDERR_FILENO, MAP_DUPLICATES_ERR_MSG,
+			ft_strlen(MAP_DUPLICATES_ERR_MSG));
+		return (ERROR_CODE);
+	}
+	if (map_get_collect_num(map) == 0)
+	{
+        write(STDERR_FILENO, MAP_AT_LEAST_1_COL_ERR_MSG,
+			ft_strlen(MAP_AT_LEAST_1_COL_ERR_MSG));
+		return (ERROR_CODE);
+	}
+	if (!map_check_exit(map))
+	{
+        write(STDERR_FILENO, MAP_NO_WAY_TO_EXIT_ERR_MSG,
+			ft_strlen(MAP_NO_WAY_TO_EXIT_ERR_MSG));
 		return (ERROR_CODE);
 	}
 	return (SUCCESS_CODE);

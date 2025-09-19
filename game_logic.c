@@ -11,8 +11,7 @@ int	game_init(t_game_data *gdata, const char *map_path)
 	ft_memset(gdata, '\0', sizeof (gdata));
 	if (!map_init(&gdata->map, map_path) || !map_check(&gdata->map))
 		return (ERROR_CODE);
-	gdata->total_collectibles = get_collect_num(&gdata->map);
-	ft_printf("\ncollect_num = %d\n\n", gdata->total_collectibles);
+	gdata->total_collectibles = map_get_collect_num(&gdata->map);
 	map_print(&gdata->map);
 	gdata->mlx = mlx_init();
 	if (!gdata->mlx)
@@ -36,22 +35,7 @@ int	game_init(t_game_data *gdata, const char *map_path)
 		return (ERROR_CODE);
 	}
 	
-	/* Load images */
-	if (!load_image(gdata, &gdata->sea, "textures/water/water_1_128x128.xpm"))
-		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->wall, "textures/rocks/rock_1_128x128.xpm"))
-		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->mine, "textures/mines/mine_128x128.xpm"))
-		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->exit, "textures/exit/skull_128x128.xpm"))
-		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->dolphin_up, "textures/dolphins/dolphin_up_128x64.xpm"))
-		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->dolphin_right, "textures/dolphins/dolphin_right_128x64.xpm"))
-		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->dolphin_down, "textures/dolphins/dolphin_down_128x64.xpm"))
-		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->dolphin_left, "textures/dolphins/dolphin_left_128x64.xpm"))
+	if (!load_images(gdata))
 		return (ERROR_CODE);
 
 	find_player(gdata);
@@ -134,4 +118,25 @@ void	find_player(t_game_data *gdata)
 		}
 		++y;
 	}
+}
+
+int	load_images(t_game_data *gdata)
+{
+	if (!load_image(gdata, &gdata->sea, TEXTURE_SEA_PATH))
+		return (ERROR_CODE);
+	if (!load_image(gdata, &gdata->wall, TEXTURE_WALL_PATH))
+		return (ERROR_CODE);
+	if (!load_image(gdata, &gdata->mine, TEXTURE_MINE_PATH))
+		return (ERROR_CODE);
+	if (!load_image(gdata, &gdata->exit, TEXTURE_EXIT_PATH))
+		return (ERROR_CODE);
+	if (!load_image(gdata, &gdata->dolphin_up, TEXTURE_DOLP_UP_PATH))
+		return (ERROR_CODE);
+	if (!load_image(gdata, &gdata->dolphin_right, TEXTURE_DOLP_RIGHT_PATH))
+		return (ERROR_CODE);
+	if (!load_image(gdata, &gdata->dolphin_down, TEXTURE_DOLP_DOWN_PATH))
+		return (ERROR_CODE);
+	if (!load_image(gdata, &gdata->dolphin_left, TEXTURE_DOLP_LEFT_PATH))
+		return (ERROR_CODE);
+	return (SUCCESS_CODE);
 }

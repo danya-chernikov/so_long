@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 17:04:17 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/18 01:51:04 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/19 15:41:42 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,17 +181,17 @@ int	render_frame(t_game_data *gdata)
 			px = x * TILE_SIZE;
 			py = y * TILE_SIZE;
 			char t = gdata->map.matrix[y][x];
-			if (t == '1')
+			if (t == MAP_WALL_SYMBOL)
 			{
 				mlx_put_image_to_window(gdata->mlx, gdata->mlx_win,
 					gdata->wall.img, px - gdata->cam_x, py - gdata->cam_y);
 			}
-			else if (t == 'C')
+			else if (t == MAP_COLLECT_SYMBOL)
 			{
 				mlx_put_image_to_window(gdata->mlx, gdata->mlx_win,
 					gdata->mine.img, px - gdata->cam_x, py - gdata->cam_y);
 			}
-			else if (t == 'E')
+			else if (t == MAP_EXIT_SYMBOL)
 			{
 				mlx_put_image_to_window(gdata->mlx, gdata->mlx_win,
 					gdata->exit.img, px - gdata->cam_x, py - gdata->cam_y);
