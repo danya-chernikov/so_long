@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 20:23:54 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/18 05:59:03 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/19 15:16:42 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,7 @@ size_t  map_calc_raw_width(t_map *map, char *file_cnt,
         ++line_len;
     }
     ++(*cnt_i);
-	ft_printf("line_len = %u\n", line_len);
-	if (map->width != line_len)
+	if (map->width != 0 && map->width != line_len)
 	{
         write(STDERR_FILENO, MAP_RECT_ERR_MSG, ft_strlen(MAP_RECT_ERR_MSG));
 		return (ERROR_CODE);

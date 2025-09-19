@@ -6,29 +6,12 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:38 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/18 05:52:41 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/19 15:16:56 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "game_logic.h"
 #include <stdlib.h>
-
-/*int	close_win_esc(int keycode, t_game_data *gdata)
-{
-	if (keycode == KEY_ESC)
-	{
-		game_cleanup(gdata);
-		exit (EXIT_SUCCESS);
-	}
-	return (SUCCESS_CODE);
-}
-
-int	close_win_redcross(t_game_data *gdata)
-{
-	game_cleanup(gdata);
-	exit (EXIT_SUCCESS);
-	return (SUCCESS_CODE);
-}*/
 
 /* To start the game, press any
  * valid key to move your dolphin
@@ -45,7 +28,9 @@ int	main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 	if (!game_init(&gdata, argv[1]))
+	{
 		exit(EXIT_FAILURE);
+	}
 	mlx_loop(gdata.mlx);
 	game_cleanup(&gdata);
 	return (EXIT_SUCCESS);

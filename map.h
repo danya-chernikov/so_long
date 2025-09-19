@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:45 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/16 22:09:09 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/19 15:15:18 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,11 @@
 /* Map error messages */
 #define MAP_PATH_ERR_MSG			"Error\nYou need to specify the path to the game's map\n"
 #define MAP_EXT_ERR_MSG             "Error\nMap file extension is invalid\n"
-#define MAP_RECT_ERR_MSG            "Error\nMap format error: map must be rectangular\n"
-#define MAP_EMPTY_RAW_ERR_MSG       "Error\nMap format error: map cannot contain empty raws\n"
-#define MAP_EMPTY_ERR_MSG           "Error\nMap format error: map file is empty\n"
-#define MAP_MIN_RAWS_ERR_MSG        "Error\nMap format error: map has to contain at least 3 raws\n"
+#define MAP_RECT_ERR_MSG            "Error\nMap must be rectangular\n"
+#define MAP_EMPTY_RAW_ERR_MSG       "Error\nMap cannot contain empty raws\n"
+#define MAP_EMPTY_ERR_MSG           "Error\nMap file is empty\n"
+#define MAP_MIN_RAWS_ERR_MSG        "Error\nMap has to contain at least 3 raws\n"
+#define MAP_MUST_BE_CLOSED_ERR_MSG	"Error\nMap must be closed\n"
 
 typedef struct  s_map
 {
@@ -73,8 +74,11 @@ size_t  map_calc_raw_width(t_map *map, char *file_cnt,
 /* map_checker3.c */
 void    map_copy_raw_into_matrix(t_map *map, char *file_cnt, void **pack);
 void    map_matrix_free(t_map *map);
-int     map_check(t_map *map);
 void	map_print(t_map *map);
 int		get_collect_num(t_map *map);
+int     map_check(t_map *map);
+
+/* map_checker4.c */
+int		map_check_if_closed(t_map *map);
 
 #endif

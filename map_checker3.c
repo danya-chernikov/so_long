@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 20:46:05 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/18 05:38:06 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/19 15:17:16 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void    map_copy_raw_into_matrix(t_map *map, char *file_cnt, void **pack)
 
 void    map_matrix_free(t_map *map)
 {
-	ft_printf("map_matrix_free()\n");
     size_t  i;
 
     i = 0;
@@ -47,16 +46,6 @@ void    map_matrix_free(t_map *map)
         ++i;
     }
     free(map->matrix);
-}
-
-/* First checks map file extension */
-int map_check(t_map *map)
-{
-	(void)map;	
-
-	ft_printf("%s\n", "checking the map...");
-
-	return (SUCCESS_CODE);
 }
 
 void	map_print(t_map *map)
@@ -91,4 +80,18 @@ int		get_collect_num(t_map *map)
 		++i;
 	}
 	return (cnum);
+}
+
+/* First checks map file extension */
+int map_check(t_map *map)
+{
+	(void)map;	
+
+	if (!map_check_if_closed(map))
+	{
+        write(STDERR_FILENO, MAP_MUST_BE_CLOSED_ERR_MSG,
+			ft_strlen(MAP_MUST_BE_CLOSED_ERR_MSG));
+		return (ERROR_CODE);
+	}
+	return (SUCCESS_CODE);
 }
