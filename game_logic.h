@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 19:42:57 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/18 01:49:18 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/19 15:36:52 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@
  * empty space. If the window created from
  * the map resources is larger than these
  * defaults, map scrolling will appear */
-#define WIN_DEFAULT_WIDTH		1280
-#define WIN_DEFAULT_HEIGHT		720
-#define TILE_SIZE				64
+#define WIN_DEFAULT_WIDTH		1920
+#define WIN_DEFAULT_HEIGHT		1080
+#define TILE_SIZE				128
 #define MOVE_SPEED				1 /* pixels per frame */
 
 /* MLX library error messages */

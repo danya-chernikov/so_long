@@ -37,21 +37,21 @@ int	game_init(t_game_data *gdata, const char *map_path)
 	}
 	
 	/* Load images */
-	if (!load_image(gdata, &gdata->sea, "textures/water/water_1_64x64.xpm"))
+	if (!load_image(gdata, &gdata->sea, "textures/water/water_1_128x128.xpm"))
 		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->wall, "textures/rocks/rock_1_64x64.xpm"))
+	if (!load_image(gdata, &gdata->wall, "textures/rocks/rock_1_128x128.xpm"))
 		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->mine, "textures/mines/mine_64x64.xpm"))
+	if (!load_image(gdata, &gdata->mine, "textures/mines/mine_128x128.xpm"))
 		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->exit, "textures/exit/skull_64x64.xpm"))
+	if (!load_image(gdata, &gdata->exit, "textures/exit/skull_128x128.xpm"))
 		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->dolphin_up, "textures/dolphins/dolphin_up_64x32.xpm"))
+	if (!load_image(gdata, &gdata->dolphin_up, "textures/dolphins/dolphin_up_128x64.xpm"))
 		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->dolphin_right, "textures/dolphins/dolphin_right_64x32.xpm"))
+	if (!load_image(gdata, &gdata->dolphin_right, "textures/dolphins/dolphin_right_128x64.xpm"))
 		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->dolphin_down, "textures/dolphins/dolphin_down_64x32.xpm"))
+	if (!load_image(gdata, &gdata->dolphin_down, "textures/dolphins/dolphin_down_128x64.xpm"))
 		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->dolphin_left, "textures/dolphins/dolphin_left_64x32.xpm"))
+	if (!load_image(gdata, &gdata->dolphin_left, "textures/dolphins/dolphin_left_128x64.xpm"))
 		return (ERROR_CODE);
 
 	find_player(gdata);
