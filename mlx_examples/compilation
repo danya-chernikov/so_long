@@ -1,1 +1,0 @@
-cc write_pixel_to_img.c ../libx/libmlx.a -lXext -lX11 -lm -lz -o write_pixel_to_img
