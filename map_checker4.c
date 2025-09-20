@@ -78,47 +78,45 @@ int	map_check_duplicates(const t_map *map)
 	return (1);
 }
 
-/* GOOD! */
-char	**map_duplicate(t_map *map)
+/* BFS to count reachable collectibles. Returns 1 of all collectibles are
+ * reachable from player, 0 otherwise */
+int	map_check_collectibles(t_map *map, t_point player, int total_collect)
 {
+	t_queue	q;
 	char	**map_copy;
-	size_t	i;
-	size_t	j;
+	int		found;
 
-	map_copy = (char **)malloc(sizeof (char *) * (map->height + 1));
+	map_copy = map_duplicate(map);
 	if (!map_copy)
-		return (NULL);
-	i = 0;
-	while (i < map->height)
+		return (MEM_ALLOC_ERR_CODE);
+	if (!queue_init(&q, map->width * map->height))
 	{
-		map_copy[i] = (char *)malloc(map->width + 1);
-		if (!map_copy[i])
-			return (NULL);
-		j = 0;
-		while (map->matrix[i][j])
-		{
-			map_copy[i][j] = map->matrix[i][j];
-			++j;
-		}
-		map_copy[i][j] = '\0';
-		++i;
+		map_free_copy(map_copy);
+		return (MEM_ALLOC_ERR_CODE);
 	}
-	map_copy[i] = NULL;
-	return (map_copy);
+	found = 0;
+	q.data[q.tail++] = player;
+	map_copy[player.y][player.x] = VISITED;
+	map_check_collectibles_loop(map, map_copy, &q, &found);
+	free(q.data);
+	map_free_copy(map_copy);
+	return (found == total_collect);
 }
 
-/* GOOD! */
-void	map_free_copy(char **map_copy)
+void	map_check_collectibles_loop(t_map *map, char **map_copy,
+			t_queue *q, int *found)
 {
-	size_t	i;
+	t_point	cur;
 
-	if (!map_copy)
-		return ;
-	i = 0;
-	while (map_copy[i])
+	while (q->head < q->tail)
 	{
-		free(map_copy[i]);
-		++i;
+		cur = q->data[q->head++];
+		if (cur.x < 0 || cur.y < 0 ||
+			cur.x >= (int)map->width || cur.y >= (int)map->height)
+			continue ;
+		*found += map_clt_hndl_right_neighbor(q, map_copy, map->width, cur);
+		*found += map_clt_hndl_left_neighbor(q, map_copy, cur);
+		*found += map_clt_hndl_down_neighbor(q, map_copy, map->height, cur);
+		*found += map_clt_hndl_up_neighbor(q, map_copy, cur);
 	}
-	free(map_copy);
 }

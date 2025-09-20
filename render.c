@@ -6,13 +6,13 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 17:04:17 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/20 13:29:30 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 16:08:36 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "game_logic.h"
 
-/* ASK ABOUT THIS */
+/* GOOD! */
 void	clamp_camera(t_game_data *gdata)
 {
 	int	max_cx;
@@ -30,6 +30,7 @@ void	clamp_camera(t_game_data *gdata)
 		gdata->cam_y = (max_cy > 0 ? max_cy : 0);
 }
 
+/* ASK ABOUT THIS */
 void	try_enter_tile(t_game_data *gdata, int nx, int ny)
 {
 	char	tile;

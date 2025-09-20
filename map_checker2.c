@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 20:23:54 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/20 15:10:50 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 18:27:07 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 /* Copies `size` bytes of content from `src` into
  * `dst` starting with `offest` */
+/* GOOD! */
 void    map_copy_content(char *dst, const char *src,
             const size_t size, const size_t offset)
 {
@@ -46,6 +47,7 @@ void    map_copy_content(char *dst, const char *src,
  *                 1111111111$
  *                 1000000001
  */
+/* GOOD! */
 void    map_calc_height(t_map *map, char *file_cnt, size_t cnt_size)
 {
     size_t  nls_num;
@@ -130,6 +132,7 @@ int map_detect_raw(t_map *map, char *file_cnt, size_t cnt_size, void **pack)
  * the length of the newly read line with the length
  * of the previously read line. If the map is rectangular,
  * these values must not differ */
+/* GOOD! */
 size_t  map_calc_raw_width(t_map *map, char *file_cnt,
     size_t cnt_size, size_t *cnt_i)
 {

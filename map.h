@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:45 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/20 15:27:48 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 18:33:45 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@
 
 typedef struct	s_point
 {
-	size_t	x;
-	size_t	y;
+	int	x;
+	int	y;
 }	t_point;
 
 typedef struct	s_queue
@@ -110,14 +110,24 @@ int     map_check(const t_map *map);
 int		map_check_cnt_is_valid(const t_map *map);
 int		map_check_if_closed(const t_map *map);
 int		map_check_duplicates(const t_map *map);
-char	**map_duplicate(t_map *map);
-void	map_free_copy(char **map_copy);
+int		map_check_collectibles(t_map *map, t_point player, int total_collect);
+void	map_check_collectibles_loop(t_map *map, char **map_copy,
+			t_queue *q, int *found);
 
 /* map_checker5.c */
-int		map_check_collectibles(t_map *map, t_point player, int total_collect);
+int		map_clt_hndl_right_neighbor(t_queue *q, char **map_copy,
+			size_t map_width, t_point cur);
+int		map_clt_hndl_left_neighbor(t_queue *q, char **map_copy, t_point cur);
+int		map_clt_hndl_down_neighbor(t_queue *q, char **map_copy,
+			size_t map_height, t_point cur);
+int		map_clt_hndl_up_neighbor(t_queue *q, char **map_copy, t_point cur);
 int		map_check_exit(t_map *map, t_point player, t_point exit);
+
+/* map_checker6.c */
 int		map_check_reachability(t_map *map, t_point player,
 			t_point exit, int total_collect);
 int		queue_init(t_queue *q, size_t qcap);
+char	**map_duplicate(t_map *map);
+void	map_free_copy(char **map_copy);
 
 #endif
