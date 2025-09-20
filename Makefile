@@ -19,7 +19,7 @@ CFLAGS=-Wall -Werror -Wextra -O0 -g3
 # /usr/bin/ld: warning: creating DT_TEXTREL in a PIE
 
 OBJS=main.o map_checker.o map_checker2.o map_checker3.o map_checker4.o map_checker5.o \
-	 map_checker6.o map_checker7.o game_logic.o game_logic2.o input.o render.o
+	 map_checker6.o map_checker7.o game_logic.o game_logic2.o input.o render.o render2.o
 
 $(NAME) : $(OBJS)
 	cd libft/ && $(MAKE) all && $(MAKE) bonus # First let's build the Libft
@@ -72,5 +72,8 @@ input.o : input.c game_logic.h
 
 render.o : render.c game_logic.h
 	$(CC) $(CFLAGS) -c render.c
+
+render2.o : render2.c game_logic.h
+	$(CC) $(CFLAGS) -c render2.c
 
 .PHONY: all clean fclean re

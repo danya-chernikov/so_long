@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 19:42:57 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/20 23:29:08 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 01:19:41 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,9 @@ void	draw_sea(t_game_data *gdata, t_point *tl_tile, t_point *br_tile);
 void	draw_tiles(t_game_data *gdata, t_point *tl_tile, t_point *br_tile);
 void	check_tiles(t_game_data *gdata, t_point *tl_tile, t_point *br_tile, t_point *m);
 void	draw_tiles_loops(t_game_data *gdata, t_point *min_tile, t_point *max_tile);
+
+/* render2.c */
+void	draw_tiles_inner_loop_body(t_game_data *gdata, t_point *i);
 void	draw_dolphin(t_game_data *gdata);
 void	update_player(t_game_data *gdata);
 void	clamp_camera(t_game_data *gdata);
