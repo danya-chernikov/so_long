@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:45 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/19 17:20:37 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 03:26:40 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@
 #define MAP_COLLECT_SYMBOL			'C'
 #define MAP_PLAYER_POS_SYMBOL		'P'
 #define MAP_EXIT_SYMBOL				'E'
+#define VISITED						'V'
 
 /* Error messages */
 /* Map error messages */
@@ -95,5 +96,10 @@ int		map_check_cnt_is_valid(const t_map *map);
 int		map_check_if_closed(const t_map *map);
 int		map_check_duplicates(const t_map *map);
 int		map_check_exit(const t_map *map);
+char	**map_duplicate(t_map *map);
+
+/* map_checker5.c */
+void	map_free_copy(char **map_copy);
+
 
 #endif

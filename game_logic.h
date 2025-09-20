@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 19:42:57 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/19 15:51:33 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 01:36:37 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,12 @@
 #define MEM_ALLOC_ERR_CODE		-1
 
 #define BREAK					2
+
+typedef struct s_point
+{
+	int	x;
+	int	y;
+}	t_point;
 
 typedef enum	e_dir
 {

@@ -80,3 +80,100 @@ int	map_check_exit(const t_map *map)
 
 	return (1);
 }
+
+char	**map_duplicate(t_map *map)
+{
+	char	*map_copy;
+	size_t	i;
+	size_t	j;
+
+	map_copy = (char *)malloc(sizeof (char *) * (map->height + 1));
+	if (!map_copy)
+		return (NULL);
+	i = 0;
+	while (i < map->height)
+	{
+		map_copy[i] = (char *)malloc(map->width + 1);
+		if (!map_copy[i])
+			return (NULL);
+		j = 0;
+		while (map->matrix[i][j])
+		{
+			map_copy[i][j] = map->matrix[i][j];
+			++j;
+		}
+		map_copy[i][j] = '\0';
+		++i;
+	}
+	map_copy[i] = NULL;
+	return (map_copy);
+}
+
+void	map_free_copy(char **map_copy)
+{
+	size_t	i;
+
+	if (!map_copy)
+		return ;
+	i = 0;
+	while (map_copy[i])
+	{
+		free(map_copy[i]);
+		++i;
+	}
+	free(map_copy);
+}
+
+/* BFS to count reachable collectibles. Returns 1 of all collectibles are
+ * reachable from player, 0 otherwise */
+int	map_check_collectibles(t_map *map, t_point player, int total_collect)
+{
+	t_point	*queue;
+	char	**map_copy;
+	int		qcap;
+	int		head;
+	int		tail;
+	int		found;
+
+	map_copy = dup_map(&map->matrix);
+	if (!map_copy)
+		return (ERROR_CODE);
+	qcap = map->width * map->height;
+	queue = (t_point *)malloc(sizeof (t_point) * qcap);
+	if (!queue)
+	{
+		free_map_copy(map_copy);
+		return (ERROR_CODE);
+	}
+	head = 0;
+	tail = 0;
+	found = 0;
+	queue[tail++] = player;
+	while (head < tail)
+	{
+		t_point	cur = queue[head++];
+		int		cx = cur.x;
+		int		cy = cur.y;
+		if (cx < 0 || cy < 0 || cx >= map->width || cy >= map->height)
+			continue ;
+		if (copy[cy][cx] == MAP_COLLECT_SYMBOL)
+			++found;
+		if ((map_copy[cy][cx] == MAP_EXIT_SYMBOL) ||
+			(map_copy[cy][cx] == MAP_SEA_SYMBOL) ||
+			(map_copy[cy][cx] == MAP_COLLECT_SYMBOL) ||
+			(map_copy[cy][cx] == MAP_PLAYER_POS_SYMBOL))
+			map_copy[cy][cx] = VISITED;
+
+			/* push neighbors */
+			if (tail + 4 <= qcap)
+			{
+				queue[tail++] = (t_point){cx + 1, cy};
+				queue[tail++] = (t_point){cx - 1, cy};
+				queue[tail++] = (t_point){cx, cy + 1};
+				queue[tail++] = (t_point){cx, cy - 1};
+			}
+	}
+	free(queue);
+	free_map_copy(map_copy);
+	return (found == total_collect);
+}
