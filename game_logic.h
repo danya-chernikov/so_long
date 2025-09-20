@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 19:42:57 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/20 13:15:27 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 20:49:45 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,11 +123,15 @@ typedef struct	s_game_data
 
 /* game_logic.c */
 int		game_init(t_game_data *gdata, const char *file_path);
+int		game_init_1(t_game_data *gdata, const char *map_path);
+void	game_init_2(t_game_data *gdata);
+void	get_window_size(t_game_data *gdata);
+void	camera_init(t_game_data *gdata);
+
+/* game_logic2.c */
 int		game_cleanup(t_game_data *data);
 int		load_image(t_game_data *gdata, t_img *out, const char *path);
 int		load_images(t_game_data *gdata);
-
-/* game_logic2.c */
 void	find_player(t_game_data *gdata);
 void	find_exit(t_game_data *gdata);
 

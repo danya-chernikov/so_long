@@ -19,6 +19,7 @@ void	map_exit_hndl_up_neighbor(t_queue *q, char **map_copy, t_point cur)
 	}
 }
 
+/* GOOD! */
 int	queue_init(t_queue *q, size_t qcap)
 {
 	q->head = 0;

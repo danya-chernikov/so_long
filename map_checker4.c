@@ -83,6 +83,8 @@ int	map_check_reachability(t_game_data *gdata)
 {
 	int	res;
 
+	find_player(gdata);
+	find_exit(gdata);
 	res = map_check_collectibles(&gdata->map, gdata->player_tile,
 		gdata->total_collectibles);
 	if (!res)
@@ -105,6 +107,7 @@ int	map_check_reachability(t_game_data *gdata)
 
 /* BFS to count reachable collectibles. Returns 1 of all collectibles are
  * reachable from player, 0 otherwise */
+/* GOOD! */
 int	map_check_collectibles(t_map *map, t_point player, int total_collect)
 {
 	t_queue	q;

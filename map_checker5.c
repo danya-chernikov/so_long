@@ -2,6 +2,7 @@
 #include "game_logic.h"
 #include <stdlib.h>
 
+/* GOOD! */
 void	map_check_collectibles_loop(t_map *map, char **map_copy,
 			t_queue *q, int *found)
 {

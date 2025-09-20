@@ -3,11 +3,14 @@
 
 int	game_init(t_game_data *gdata, const char *map_path)
 {
-	int	map_px_w;
-	int	map_px_h;
-	int	max_cx;
-	int	max_cy;
+	if (!game_init_1(gdata, map_path))
+		return (ERROR_CODE);
+	game_init_2(gdata);
+	return (SUCCESS_CODE);
+}
 
+int	game_init_1(t_game_data *gdata, const char *map_path)
+{
 	ft_memset(gdata, '\0', sizeof (gdata));
 	if (!map_init(&gdata->map, map_path) || !map_check(&gdata->map))
 		return (ERROR_CODE);
@@ -19,13 +22,7 @@ int	game_init(t_game_data *gdata, const char *map_path)
 		write(STDERR_FILENO, MLX_INIT_ERR_MSG, ft_strlen(MLX_INIT_ERR_MSG));
 		return (ERROR_CODE);
 	}
-
-	/* Compute desired window size in pixels */
-	map_px_w = gdata->map.width * TILE_SIZE;
-	map_px_h = gdata->map.height * TILE_SIZE;
-	gdata->win_w = (map_px_w <= WIN_DEFAULT_WIDTH) ? map_px_w : WIN_DEFAULT_WIDTH;
-	gdata->win_h = (map_px_h <= WIN_DEFAULT_HEIGHT) ? map_px_h : WIN_DEFAULT_HEIGHT;
-
+	get_window_size(gdata);
 	gdata->mlx_win = mlx_new_window(gdata->mlx, gdata->win_w,
 			gdata->win_h, GAME_NAME);
 	if (!gdata->mlx_win)
@@ -33,23 +30,54 @@ int	game_init(t_game_data *gdata, const char *map_path)
 		write(STDERR_FILENO, MLX_WIN_CREATE_ERR_MSG,
 			ft_strlen(MLX_WIN_CREATE_ERR_MSG));
 		return (ERROR_CODE);
-	}
-	
+	}	
 	if (!load_images(gdata))
 		return (ERROR_CODE);
-
-	find_player(gdata);
-	find_exit(gdata);
-
 	if (!map_check_reachability(gdata))
 		return (ERROR_CODE);
+	return (SUCCESS_CODE);
+}
 
+void	game_init_2(t_game_data *gdata)
+{
 	gdata->dir = DIR_NONE;
 	gdata->moving = 0;
 	gdata->moves_count = 0;
 	gdata->collected_count = 0;
+	camera_init(gdata);
+	mlx_hook(gdata->mlx_win, 2, 1L<<0, key_down, gdata);
+	mlx_hook(gdata->mlx_win, 3, 1L<<1, key_up, gdata);
+	mlx_hook(gdata->mlx_win, 17, 0, (int (*)(void *))game_cleanup, gdata);
+	mlx_loop_hook(gdata->mlx, (int (*)(void *))render_frame, gdata);
+}
 
-	/* Initial camera */
+/* Computes desired window size in pixels */
+void	get_window_size(t_game_data *gdata)
+{
+	int	map_px_w;
+	int	map_px_h;
+
+	map_px_w = gdata->map.width * TILE_SIZE;
+	map_px_h = gdata->map.height * TILE_SIZE;
+	if (map_px_w <= WIN_DEFAULT_WIDTH)
+		gdata->win_w = map_px_w;
+	else
+		gdata->win_w = WIN_DEFAULT_WIDTH;
+	if (map_px_h <= WIN_DEFAULT_HEIGHT)
+		gdata->win_h = map_px_h;
+	else
+		gdata->win_h = WIN_DEFAULT_HEIGHT;
+}
+
+/* Initializes the camera. Ensures the
+ * camera is centered on the player and
+ * the camera does not scroll outside
+ * the map boundaries */
+void	camera_init(t_game_data *gdata)
+{
+	int	max_cx;
+	int	max_cy;
+
 	gdata->cam_x = gdata->player_pixel.x - gdata->win_w / 2 + TILE_SIZE / 2;
 	gdata->cam_y = gdata->player_pixel.y - gdata->win_h / 2 + TILE_SIZE / 2;
 	if (gdata->cam_x < 0)
@@ -59,61 +87,17 @@ int	game_init(t_game_data *gdata, const char *map_path)
 	max_cx = gdata->map.width * TILE_SIZE - gdata->win_w;
 	max_cy = gdata->map.height * TILE_SIZE - gdata->win_h;
 	if (gdata->cam_x > max_cx)
-		gdata->cam_x = (max_cx > 0 ? max_cx : 0);
-	if (gdata->cam_y > max_cy)
-		gdata->cam_y = (max_cy > 0 ? max_cy : 0);
-
-	/* Hooks */
-	mlx_hook(gdata->mlx_win, 2, 1L<<0, key_down, gdata);
-	mlx_hook(gdata->mlx_win, 3, 1L<<1, key_up, gdata);
-	mlx_hook(gdata->mlx_win, 17, 0, (int (*)(void *))game_cleanup, gdata);
-	mlx_loop_hook(gdata->mlx, (int (*)(void *))render_frame, gdata);
-
-	return (SUCCESS_CODE);
-}
-
-/* Note: mlx does not expose an easy way to free
- * images portably here; skipping for brevity */
-int	game_cleanup(t_game_data *gdata)
-{
-	if (!gdata)
-		exit(EXIT_SUCCESS);
-	if (gdata->mlx_win)
-		mlx_destroy_window(gdata->mlx, gdata->mlx_win);
-	map_matrix_free(&gdata->map);
-	exit(EXIT_SUCCESS);
-	return (SUCCESS_CODE);
-}
-
-int	load_image(t_game_data *gdata, t_img *out, const char *path)
-{
-	out->img = mlx_xpm_file_to_image(gdata->mlx, (char *)path, &out->width, &out->height);
-	if (!out->img)
 	{
-		write(STDERR_FILENO, MLX_LOAD_IMG_ERR_MSG, ft_strlen(MLX_LOAD_IMG_ERR_MSG));
-		game_cleanup(gdata);
-		return (ERROR_CODE);
+		if (max_cx > 0)
+			gdata->cam_x = max_cx;
+		else
+			gdata->cam_x = 0;
 	}
-	return (SUCCESS_CODE);
-}
-
-int	load_images(t_game_data *gdata)
-{
-	if (!load_image(gdata, &gdata->sea, TEXTURE_SEA_PATH))
-		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->wall, TEXTURE_WALL_PATH))
-		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->mine, TEXTURE_MINE_PATH))
-		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->exit, TEXTURE_EXIT_PATH))
-		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->dolphin_up, TEXTURE_DOLP_UP_PATH))
-		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->dolphin_right, TEXTURE_DOLP_RIGHT_PATH))
-		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->dolphin_down, TEXTURE_DOLP_DOWN_PATH))
-		return (ERROR_CODE);
-	if (!load_image(gdata, &gdata->dolphin_left, TEXTURE_DOLP_LEFT_PATH))
-		return (ERROR_CODE);
-	return (SUCCESS_CODE);
+	if (gdata->cam_y > max_cy)
+	{
+		if (max_cy > 0)
+			gdata->cam_y = max_cy;
+		else
+			gdata->cam_y = 0;
+	}
 }
