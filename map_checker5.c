@@ -27,6 +27,7 @@ int	map_check_collectibles(t_map *map, t_point player, int total_collect)
 	tail = 0;
 	found = 0;
 	queue[tail++] = player;
+	map_copy[player.y][player.x] = MAP_PLAYER_POS_SYMBOL;
 	while (head < tail)
 	{
 		t_point	cur = queue[head++];
@@ -43,8 +44,6 @@ int	map_check_collectibles(t_map *map, t_point player, int total_collect)
 			(map_copy[cy][cx] == MAP_COLLECT_SYMBOL) ||
 			(map_copy[cy][cx] == MAP_PLAYER_POS_SYMBOL))
 			map_copy[cy][cx] = VISITED;
-
-		/* push neighbors */
 		if (tail + 4 <= qcap)
 		{
 			queue[tail++] = (t_point){cx + 1, cy};
@@ -82,31 +81,58 @@ int	map_check_exit(t_map *map, t_point player, t_point exit)
 	tail = 0;
 	reached = 0;
 	queue[tail++] = player;
+	map_copy[player.y][player.x] = VISITED;
 	while (head < tail)
 	{
 		t_point	cur = queue[head++];
 		int		cx = cur.x;
 		int		cy = cur.y;
-		if (cx < 0 || cy < 0 || cx >= (int)map->width || cx >= (int)map->height)
-			continue ;
-		if (map_copy[cy][cx] == MAP_WALL_SYMBOL || map_copy[cy][cx] == VISITED)
+		if (cx < 0 || cy < 0 || cx >= (int)map->width || cy >= (int)map->height)
 			continue ;
 		if (cx == (int)exit.x && cy == (int)exit.y)
 		{
 			reached = 1;
 			break ;
 		}
-		if ((map_copy[cy][cx] == MAP_EXIT_SYMBOL) ||
-			(map_copy[cy][cx] == MAP_SEA_SYMBOL) ||
-			(map_copy[cy][cx] == MAP_COLLECT_SYMBOL) ||
-			(map_copy[cy][cx] == MAP_PLAYER_POS_SYMBOL))
-			map_copy[cy][cx] = VISITED;
-		if (tail + 4 <= qcap)
+		if (cx + 1 < (int)map->width)
 		{
-			queue[tail++] = (t_point){cx + 1, cy};
-			queue[tail++] = (t_point){cx - 1, cy};
-			queue[tail++] = (t_point){cx, cy + 1};
-			queue[tail++] = (t_point){cx, cy - 1};
+			char c = map_copy[cy][cx + 1];
+			if (c != MAP_WALL_SYMBOL && c != VISITED)
+			{
+				if (tail < qcap)
+					queue[tail++] = (t_point){cx + 1, cy};
+				map_copy[cy][cx + 1] = VISITED;
+			}
+		}
+		if (cx - 1 >= 0)
+		{
+			char c = map_copy[cy][cx - 1];
+			if (c != MAP_WALL_SYMBOL && c != VISITED)
+			{
+				if (tail < qcap)
+					queue[tail++] = (t_point){cx - 1, cy};
+				map_copy[cy][cx - 1] = VISITED;
+			}
+		}
+		if (cy + 1 < (int)map->height)
+		{
+			char c = map_copy[cy + 1][cx];
+			if (c != MAP_WALL_SYMBOL && c != VISITED)
+			{
+				if (tail < qcap)
+					queue[tail++] = (t_point){cx, cy + 1};
+				map_copy[cy + 1][cx] = VISITED;
+			}
+		}
+		if (cy - 1 >= 0)
+		{
+			char c = map_copy[cy - 1][cx];
+			if (c != MAP_WALL_SYMBOL && c != VISITED)
+			{
+				if (tail < qcap)
+					queue[tail++] = (t_point){cx, cy - 1};
+				map_copy[cy - 1][cx] = VISITED;
+			}
 		}
 	}
 	free(queue);
