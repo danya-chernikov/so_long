@@ -2,6 +2,7 @@
 #include "game_logic.h"
 #include <stdlib.h>
 
+/* GOOD! */
 int	map_check_cnt_is_valid(const t_map *map)
 {
 	size_t  raw_i;
@@ -27,6 +28,7 @@ int	map_check_cnt_is_valid(const t_map *map)
 }
 
 /* Returns 1 if the map is closed, 0 otherwise */
+/* GOOD! */
 int	map_check_if_closed(const t_map *map)
 {
 	size_t	raw_i;
@@ -47,6 +49,7 @@ int	map_check_if_closed(const t_map *map)
  * exit tiles, and verifies that there is
  * at least one collectible object, one
  * initial position, and one exit */
+/* GOOD! */
 int	map_check_duplicates(const t_map *map)
 {
 	size_t  raw_i;
@@ -75,6 +78,7 @@ int	map_check_duplicates(const t_map *map)
 	return (1);
 }
 
+/* GOOD! */
 char	**map_duplicate(t_map *map)
 {
 	char	**map_copy;
@@ -103,6 +107,7 @@ char	**map_duplicate(t_map *map)
 	return (map_copy);
 }
 
+/* GOOD! */
 void	map_free_copy(char **map_copy)
 {
 	size_t	i;

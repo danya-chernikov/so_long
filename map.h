@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:45 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/20 13:21:18 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 15:27:48 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,19 @@
 #define MAP_CLTS_NOT_REACH_ERR_MSG	"Error\nMap has some collectibles that are not reachable\n"
 #define MAP_NO_WAY_TO_EXIT_ERR_MSG	"Error\nMap does not have a valid path to exit\n"
 
-typedef struct s_point
+typedef struct	s_point
 {
 	size_t	x;
 	size_t	y;
 }	t_point;
+
+typedef struct	s_queue
+{
+	t_point	*data;
+	int		qcap;
+	int		head;
+	int		tail;
+}	t_queue;
 
 typedef struct  s_map
 {
@@ -110,5 +118,6 @@ int		map_check_collectibles(t_map *map, t_point player, int total_collect);
 int		map_check_exit(t_map *map, t_point player, t_point exit);
 int		map_check_reachability(t_map *map, t_point player,
 			t_point exit, int total_collect);
+int		queue_init(t_queue *q, size_t qcap);
 
 #endif

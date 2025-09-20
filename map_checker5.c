@@ -6,31 +6,24 @@
  * reachable from player, 0 otherwise */
 int	map_check_collectibles(t_map *map, t_point player, int total_collect)
 {
-	t_point	*queue;
+	t_queue	q;
 	char	**map_copy;
-	int		qcap;
-	int		head;
-	int		tail;
 	int		found;
 
 	map_copy = map_duplicate(map);
 	if (!map_copy)
 		return (MEM_ALLOC_ERR_CODE);
-	qcap = map->width * map->height;
-	queue = (t_point *)malloc(qcap * sizeof (t_point));
-	if (!queue)
+	if (!queue_init(&q, map->width * map->height))
 	{
 		map_free_copy(map_copy);
 		return (MEM_ALLOC_ERR_CODE);
 	}
-	head = 0;
-	tail = 0;
 	found = 0;
-	queue[tail++] = player;
+	q.data[q.tail++] = player;
 	map_copy[player.y][player.x] = VISITED;
-	while (head < tail)
+	while (q.head < q.tail)
 	{
-		t_point	cur = queue[head++];
+		t_point	cur = q.data[q.head++];
 		int		cx = cur.x;
 		int		cy = cur.y;
 		if (cx < 0 || cy < 0 || cx >= (int)map->width || cy >= (int)map->height)
@@ -42,8 +35,8 @@ int	map_check_collectibles(t_map *map, t_point player, int total_collect)
 			{
 				if (c == MAP_COLLECT_SYMBOL)
 					++found;
-				if (tail < qcap)
-					queue[tail++] = (t_point){cx + 1, cy};
+				if (q.tail < q.qcap)
+					q.data[q.tail++] = (t_point){cx + 1, cy};
 				map_copy[cy][cx + 1] = VISITED;
 			}
 		}
@@ -54,8 +47,8 @@ int	map_check_collectibles(t_map *map, t_point player, int total_collect)
 			{
 				if (c == MAP_COLLECT_SYMBOL)
 					++found;
-				if (tail < qcap)
-					queue[tail++] = (t_point){cx - 1, cy};
+				if (q.tail < q.qcap)
+					q.data[q.tail++] = (t_point){cx - 1, cy};
 				map_copy[cy][cx - 1] = VISITED;
 			}
 		}
@@ -66,8 +59,8 @@ int	map_check_collectibles(t_map *map, t_point player, int total_collect)
 			{
 				if (c == MAP_COLLECT_SYMBOL)
 					++found;
-				if (tail < qcap)
-					queue[tail++] = (t_point){cx, cy + 1};
+				if (q.tail < q.qcap)
+					q.data[q.tail++] = (t_point){cx, cy + 1};
 				map_copy[cy + 1][cx] = VISITED;
 			}
 		}
@@ -78,13 +71,13 @@ int	map_check_collectibles(t_map *map, t_point player, int total_collect)
 			{
 				if (c == MAP_COLLECT_SYMBOL)
 					++found;
-				if (tail < qcap)
-					queue[tail++] = (t_point){cx, cy - 1};
+				if (q.tail < q.qcap)
+					q.data[q.tail++] = (t_point){cx, cy - 1};
 				map_copy[cy - 1][cx] = VISITED;
 			}
 		}
 	}
-	free(queue);
+	free(q.data);
 	map_free_copy(map_copy);
 	return (found == total_collect);
 }
@@ -92,31 +85,24 @@ int	map_check_collectibles(t_map *map, t_point player, int total_collect)
 /* Reuse BFS idea for exit reachability (returns 1 if exit is reachable) */
 int	map_check_exit(t_map *map, t_point player, t_point exit)
 {
-	t_point	*queue;
+	t_queue	q;
 	char	**map_copy;
-	int		qcap;
-	int		head;
-	int		tail;
 	int		reached;
 
 	map_copy = map_duplicate(map);
 	if (!map_copy)
 		return (MEM_ALLOC_ERR_CODE);
-	qcap = map->width * map->height;
-	queue = (t_point *)malloc(qcap * sizeof (t_point));
-	if (!queue)
+	if (!queue_init(&q, map->width * map->height))
 	{
 		map_free_copy(map_copy);
 		return (MEM_ALLOC_ERR_CODE);
 	}
-	head = 0;
-	tail = 0;
 	reached = 0;
-	queue[tail++] = player;
+	q.data[q.tail++] = player;
 	map_copy[player.y][player.x] = VISITED;
-	while (head < tail)
+	while (q.head < q.tail)
 	{
-		t_point	cur = queue[head++];
+		t_point	cur = q.data[q.head++];
 		int		cx = cur.x;
 		int		cy = cur.y;
 		if (cx < 0 || cy < 0 || cx >= (int)map->width || cy >= (int)map->height)
@@ -131,8 +117,8 @@ int	map_check_exit(t_map *map, t_point player, t_point exit)
 			char c = map_copy[cy][cx + 1];
 			if (c != MAP_WALL_SYMBOL && c != VISITED)
 			{
-				if (tail < qcap)
-					queue[tail++] = (t_point){cx + 1, cy};
+				if (q.tail < q.qcap)
+					q.data[q.tail++] = (t_point){cx + 1, cy};
 				map_copy[cy][cx + 1] = VISITED;
 			}
 		}
@@ -141,8 +127,8 @@ int	map_check_exit(t_map *map, t_point player, t_point exit)
 			char c = map_copy[cy][cx - 1];
 			if (c != MAP_WALL_SYMBOL && c != VISITED)
 			{
-				if (tail < qcap)
-					queue[tail++] = (t_point){cx - 1, cy};
+				if (q.tail < q.qcap)
+					q.data[q.tail++] = (t_point){cx - 1, cy};
 				map_copy[cy][cx - 1] = VISITED;
 			}
 		}
@@ -151,8 +137,8 @@ int	map_check_exit(t_map *map, t_point player, t_point exit)
 			char c = map_copy[cy + 1][cx];
 			if (c != MAP_WALL_SYMBOL && c != VISITED)
 			{
-				if (tail < qcap)
-					queue[tail++] = (t_point){cx, cy + 1};
+				if (q.tail < q.qcap)
+					q.data[q.tail++] = (t_point){cx, cy + 1};
 				map_copy[cy + 1][cx] = VISITED;
 			}
 		}
@@ -161,13 +147,13 @@ int	map_check_exit(t_map *map, t_point player, t_point exit)
 			char c = map_copy[cy - 1][cx];
 			if (c != MAP_WALL_SYMBOL && c != VISITED)
 			{
-				if (tail < qcap)
-					queue[tail++] = (t_point){cx, cy - 1};
+				if (q.tail < q.qcap)
+					q.data[q.tail++] = (t_point){cx, cy - 1};
 				map_copy[cy - 1][cx] = VISITED;
 			}
 		}
 	}
-	free(queue);
+	free(q.data);
 	map_free_copy(map_copy);
 	return (reached);
 }
@@ -193,5 +179,16 @@ int	map_check_reachability(t_map *map, t_point player,
 	}
 	if (res == MEM_ALLOC_ERR_CODE)
 		return (MEM_ALLOC_ERR_CODE);
+	return (SUCCESS_CODE);
+}
+
+int	queue_init(t_queue *q, size_t qcap)
+{
+	q->head = 0;
+	q->tail = 0;
+	q->qcap = qcap;
+	q->data = (t_point *)malloc(q->qcap * sizeof (t_point));
+	if (!q->data)
+		return (ERROR_CODE);
 	return (SUCCESS_CODE);
 }

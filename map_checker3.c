@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 20:46:05 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/20 12:40:36 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 15:11:42 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdlib.h>
 
 /* Now let's copy this raw into our matrix */
+/* GOOD! */
 void    map_copy_raw_into_matrix(t_map *map, char *file_cnt, void **pack)
 {
     size_t  j;
@@ -35,6 +36,7 @@ void    map_copy_raw_into_matrix(t_map *map, char *file_cnt, void **pack)
     free(pack);
 }
 
+/* GOOD! */
 void    map_matrix_free(t_map *map)
 {
     size_t  i;
@@ -48,6 +50,7 @@ void    map_matrix_free(t_map *map)
     free(map->matrix);
 }
 
+/* GOOD! */
 void	map_print(const t_map *map)
 {
 	size_t	i;
@@ -60,6 +63,7 @@ void	map_print(const t_map *map)
 	}
 }
 
+/* GOOD! */
 int	map_get_collect_num(const t_map *map)
 {
 	int		cnum;
@@ -82,6 +86,7 @@ int	map_get_collect_num(const t_map *map)
 	return (cnum);
 }
 
+/* GOOD! */
 int	map_check(const t_map *map)
 {
 	if (!map_check_cnt_is_valid(map))

@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 20:23:54 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/20 13:21:21 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 15:10:50 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void    map_calc_height(t_map *map, char *file_cnt, size_t cnt_size)
 /* Splits and copies each row from the map file content into the
  * map matrix. By 'row', we mean a substring located between
  * newline characters */
+/* GOOD! */
 int map_split_raws(t_map *map, char *file_cnt, size_t cnt_size)
 {
     size_t  line_len;
@@ -89,10 +90,11 @@ int map_split_raws(t_map *map, char *file_cnt, size_t cnt_size)
         map_copy_raw_into_matrix(map, file_cnt,
             pack_args(3, (void *)&raw_i, (void *)&cnt_i, (void *)&line_len));
         ++raw_i;
-    } // while (raw_i < map->height)
+    }
     return (SUCCESS_CODE);
 }
 
+/* GOOD! */
 int map_detect_raw(t_map *map, char *file_cnt, size_t cnt_size, void **pack)
 {
     size_t  *raw_i;

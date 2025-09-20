@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 15:51:36 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/12 19:03:54 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 15:01:01 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
  * all file content will be read.
  *     file_cnt - all map file content;
  *     cnt_size - all map file content size */
+/* GOOD! */
 int map_init(t_map *map, const char *file_path)
 {
     int     fd;
@@ -58,6 +59,7 @@ int map_init(t_map *map, const char *file_path)
 /* Checks if map provided by the user in argv[1]
  * has an appropriate extension. Returns 1 if
  * everything is okay */
+/* GOOD! */
 int map_check_file_ext(const char *file_path)
 {
     int i;
@@ -81,6 +83,7 @@ int map_check_file_ext(const char *file_path)
 }
 
 /* Does this function have an appropriate name? */
+/* GOOD! */
 int	map_move_raws_into_matrix(t_map *map, int fd, char **file_cnt)
 {
     int     res;
@@ -120,6 +123,7 @@ int	map_move_raws_into_matrix(t_map *map, int fd, char **file_cnt)
  * error has occurred. A return value of 0 is also considered an
  * error, since the map file cannot be empty.
  * WHY DO WE SEPARATE EXIT ERROR CODES HERE?! */
+/* GOOD! */
 int map_read_cnt(int fd, char **file_cnt, size_t *cnt_size)
 {
     char    *cnt_chunk;
@@ -145,7 +149,7 @@ int map_read_cnt(int fd, char **file_cnt, size_t *cnt_size)
     return (SUCCESS_CODE);
 }
 
-/* !!! RESOLVE PROBLEM WITH FT_REALLOC() !!! */
+/* GOOD! */
 int map_read_cnt_chunk(int fd, char **file_cnt, size_t *cnt_size, char **chunk)
 {
     char    *tmp_cnt;
@@ -155,12 +159,12 @@ int map_read_cnt_chunk(int fd, char **file_cnt, size_t *cnt_size, char **chunk)
     if (rlen <= 0)
     {
         if (rlen < 0)
-            perror(FILE_READ_ERR_MSG); // CORRECT THIS! THE FUNCTION WILL RETURN SUCCESS_CODE ANYWAY! MUST RETURN ERROR_CODE INSTEAD IF rlen < 0
+            perror(FILE_READ_ERR_MSG);
         return (BREAK);
     }
     else
     {
-        tmp_cnt = ft_realloc(*file_cnt, *cnt_size, *cnt_size + rlen); // THIS DOES NOT WORK AT ALL!
+        tmp_cnt = ft_realloc(*file_cnt, *cnt_size, *cnt_size + rlen);
         if (!tmp_cnt)
         {
             write(STDERR_FILENO, MEM_ALLOC_ERR_MSG, ft_strlen(MEM_ALLOC_ERR_MSG));
