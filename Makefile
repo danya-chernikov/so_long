@@ -18,7 +18,8 @@ CFLAGS=-Wall -Werror -Wextra -O0 -g3
 # /usr/bin/ld: printf/libftprintf.a(non_numeric.o): warning: relocation in read-only section `.text'
 # /usr/bin/ld: warning: creating DT_TEXTREL in a PIE
 
-OBJS=main.o map_checker.o map_checker2.o map_checker3.o map_checker4.o map_checker5.o map_checker6.o game_logic.o game_logic2.o input.o render.o
+OBJS=main.o map_checker.o map_checker2.o map_checker3.o map_checker4.o map_checker5.o \
+	 map_checker6.o map_checker7.o game_logic.o game_logic2.o input.o render.o
 
 $(NAME) : $(OBJS)
 	cd libft/ && $(MAKE) all && $(MAKE) bonus # First let's build the Libft
@@ -56,6 +57,9 @@ map_checker5.o : map_checker5.c game_logic.h $(LIBFT_HEADER)
 
 map_checker6.o : map_checker6.c game_logic.h $(LIBFT_HEADER)
 	$(CC) $(CFLAGS) -c map_checker6.c
+
+map_checker7.o : map_checker7.c game_logic.h $(LIBFT_HEADER)
+	$(CC) $(CFLAGS) -c map_checker7.c
 
 game_logic.o : game_logic.c libx/mlx.h map.h key_codes.h
 	$(CC) $(CFLAGS) -c game_logic.c

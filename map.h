@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:45 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/20 18:33:45 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 19:42:54 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,10 @@
 #define MAP_CLTS_NOT_REACH_ERR_MSG	"Error\nMap has some collectibles that are not reachable\n"
 #define MAP_NO_WAY_TO_EXIT_ERR_MSG	"Error\nMap does not have a valid path to exit\n"
 
+/* Forward declaration to avoid a circular
+ * dependency between map.h and game_logic.h */
+typedef struct s_game_data	t_game_data;
+
 typedef struct	s_point
 {
 	int	x;
@@ -110,22 +114,31 @@ int     map_check(const t_map *map);
 int		map_check_cnt_is_valid(const t_map *map);
 int		map_check_if_closed(const t_map *map);
 int		map_check_duplicates(const t_map *map);
+int		map_check_reachability(t_game_data *gdata);
 int		map_check_collectibles(t_map *map, t_point player, int total_collect);
-void	map_check_collectibles_loop(t_map *map, char **map_copy,
-			t_queue *q, int *found);
 
 /* map_checker5.c */
+void	map_check_collectibles_loop(t_map *map, char **map_copy,
+			t_queue *q, int *found);
 int		map_clt_hndl_right_neighbor(t_queue *q, char **map_copy,
 			size_t map_width, t_point cur);
 int		map_clt_hndl_left_neighbor(t_queue *q, char **map_copy, t_point cur);
 int		map_clt_hndl_down_neighbor(t_queue *q, char **map_copy,
 			size_t map_height, t_point cur);
 int		map_clt_hndl_up_neighbor(t_queue *q, char **map_copy, t_point cur);
-int		map_check_exit(t_map *map, t_point player, t_point exit);
 
 /* map_checker6.c */
-int		map_check_reachability(t_map *map, t_point player,
-			t_point exit, int total_collect);
+int		map_check_exit(t_game_data *gdata, t_point player);
+void	map_check_exit_loop(t_game_data *gdata, char **map_copy,
+			t_queue *q, int *reached);
+void	map_exit_hndl_right_neighbor(t_queue *q, char **map_copy,
+			size_t map_width, t_point cur);
+void	map_exit_hndl_left_neighbor(t_queue *q, char **map_copy, t_point cur);
+void	map_exit_hndl_down_neighbor(t_queue *q, char **map_copy,
+			size_t map_height, t_point cur);
+
+/* map_checker7.c */
+void	map_exit_hndl_up_neighbor(t_queue *q, char **map_copy, t_point cur);
 int		queue_init(t_queue *q, size_t qcap);
 char	**map_duplicate(t_map *map);
 void	map_free_copy(char **map_copy);

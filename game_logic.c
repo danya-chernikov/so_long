@@ -41,8 +41,7 @@ int	game_init(t_game_data *gdata, const char *map_path)
 	find_player(gdata);
 	find_exit(gdata);
 
-	if (!map_check_reachability(&gdata->map, gdata->player_tile,
-		gdata->exit_coord, gdata->total_collectibles))
+	if (!map_check_reachability(gdata))
 		return (ERROR_CODE);
 
 	gdata->dir = DIR_NONE;

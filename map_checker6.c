@@ -2,83 +2,103 @@
 #include "game_logic.h"
 #include <stdlib.h>
 
+/* Reuse BFS idea for exit reachability (returns 1 if exit is reachable) */
 /* GOOD! */
-int	map_check_reachability(t_map *map, t_point player,
-	t_point exit, int total_collect)
-{	
-	int	res;
-
-	res = map_check_collectibles(map, player, total_collect);
-	if (!res)
-	{
-        write(STDERR_FILENO, MAP_CLTS_NOT_REACH_ERR_MSG,
-			ft_strlen(MAP_CLTS_NOT_REACH_ERR_MSG));
-        return (ERROR_CODE);
-	}
-	res = map_check_exit(map, player, exit);
-	if (!res)
-	{
-        write(STDERR_FILENO, MAP_NO_WAY_TO_EXIT_ERR_MSG,
-			ft_strlen(MAP_NO_WAY_TO_EXIT_ERR_MSG));
-        return (ERROR_CODE);
-	}
-	if (res == MEM_ALLOC_ERR_CODE)
-		return (MEM_ALLOC_ERR_CODE);
-	return (SUCCESS_CODE);
-}
-
-int	queue_init(t_queue *q, size_t qcap)
+int	map_check_exit(t_game_data *gdata, t_point player)
 {
-	q->head = 0;
-	q->tail = 0;
-	q->qcap = qcap;
-	q->data = (t_point *)malloc(q->qcap * sizeof (t_point));
-	if (!q->data)
-		return (ERROR_CODE);
-	return (SUCCESS_CODE);
-}
-
-/* GOOD! */
-char	**map_duplicate(t_map *map)
-{
+	t_queue	q;
 	char	**map_copy;
-	size_t	i;
-	size_t	j;
+	int		reached;
 
-	map_copy = (char **)malloc(sizeof (char *) * (map->height + 1));
+	map_copy = map_duplicate(&gdata->map);
 	if (!map_copy)
-		return (NULL);
-	i = 0;
-	while (i < map->height)
+		return (MEM_ALLOC_ERR_CODE);
+	if (!queue_init(&q, gdata->map.width * gdata->map.height))
 	{
-		map_copy[i] = (char *)malloc(map->width + 1);
-		if (!map_copy[i])
-			return (NULL);
-		j = 0;
-		while (map->matrix[i][j])
-		{
-			map_copy[i][j] = map->matrix[i][j];
-			++j;
-		}
-		map_copy[i][j] = '\0';
-		++i;
+		map_free_copy(map_copy);
+		return (MEM_ALLOC_ERR_CODE);
 	}
-	map_copy[i] = NULL;
-	return (map_copy);
+	reached = 0;
+	q.data[q.tail++] = player;
+	map_copy[player.y][player.x] = VISITED;
+	map_check_exit_loop(gdata, map_copy, &q, &reached);
+	free(q.data);
+	map_free_copy(map_copy);
+	return (reached);
 }
 
 /* GOOD! */
-void	map_free_copy(char **map_copy)
+void	map_check_exit_loop(t_game_data *gdata, char **map_copy,
+			t_queue *q, int *reached)
 {
-	size_t	i;
+	t_point	cur;
 
-	if (!map_copy)
-		return ;
-	i = 0;
-	while (map_copy[i])
+	while (q->head < q->tail)
 	{
-		free(map_copy[i]);
-		++i;
+		cur = q->data[q->head++];
+		if (cur.x < 0 || cur.y < 0 ||
+			cur.x >= (int)gdata->map.width || cur.y >= (int)gdata->map.height)
+			continue ;
+		if (cur.x == (int)gdata->exit_coord.x &&
+			cur.y == (int)gdata->exit_coord.y)
+		{
+			*reached = 1;
+			break ;
+		}
+		map_exit_hndl_right_neighbor(q, map_copy, gdata->map.width, cur);
+		map_exit_hndl_left_neighbor(q, map_copy, cur);
+		map_exit_hndl_down_neighbor(q, map_copy, gdata->map.height, cur);
+		map_exit_hndl_up_neighbor(q, map_copy, cur);
 	}
-	free(map_copy);
+}
+
+/* GOOD! */
+void	map_exit_hndl_right_neighbor(t_queue *q, char **map_copy, size_t map_width, t_point cur)
+{
+	char	c;
+
+	if (cur.x + 1 < (int)map_width)
+	{
+		c = map_copy[cur.y][cur.x + 1];
+		if (c != MAP_WALL_SYMBOL && c != VISITED)
+		{
+			if (q->tail < q->qcap)
+				q->data[q->tail++] = (t_point){cur.x + 1, cur.y};
+			map_copy[cur.y][cur.x + 1] = VISITED;
+		}
+	}
+}
+
+/* GOOD! */
+void	map_exit_hndl_left_neighbor(t_queue *q, char **map_copy, t_point cur)
+{
+	char	c;
+
+	if (cur.x - 1 >= 0)
+	{
+		c = map_copy[cur.y][cur.x - 1];
+		if (c != MAP_WALL_SYMBOL && c != VISITED)
+		{
+			if (q->tail < q->qcap)
+				q->data[q->tail++] = (t_point){cur.x - 1, cur.y};
+			map_copy[cur.y][cur.x - 1] = VISITED;
+		}
+	}
+}
+
+/* GOOD! */
+void	map_exit_hndl_down_neighbor(t_queue *q, char **map_copy, size_t map_height, t_point cur)
+{
+	char	c;
+
+	if (cur.y + 1 < (int)map_height)
+	{
+		c = map_copy[cur.y + 1][cur.x];
+		if (c != MAP_WALL_SYMBOL && c != VISITED)
+		{
+			if (q->tail < q->qcap)
+				q->data[q->tail++] = (t_point){cur.x, cur.y + 1};
+			map_copy[cur.y + 1][cur.x] = VISITED;
+		}
+	}
 }
