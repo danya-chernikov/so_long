@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:45 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/20 03:26:40 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 13:21:18 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,14 @@
 #define MAP_MUST_BE_CLOSED_ERR_MSG	"Error\nMap must be enclosed\n"
 #define MAP_DUPLICATES_ERR_MSG		"Error\nThe map must have exactly one exit and one initial player position\n"
 #define MAP_AT_LEAST_1_COL_ERR_MSG	"Error\nMap must contain at least one collectible object\n"
+#define MAP_CLTS_NOT_REACH_ERR_MSG	"Error\nMap has some collectibles that are not reachable\n"
 #define MAP_NO_WAY_TO_EXIT_ERR_MSG	"Error\nMap does not have a valid path to exit\n"
+
+typedef struct s_point
+{
+	size_t	x;
+	size_t	y;
+}	t_point;
 
 typedef struct  s_map
 {
@@ -95,11 +102,13 @@ int     map_check(const t_map *map);
 int		map_check_cnt_is_valid(const t_map *map);
 int		map_check_if_closed(const t_map *map);
 int		map_check_duplicates(const t_map *map);
-int		map_check_exit(const t_map *map);
 char	**map_duplicate(t_map *map);
-
-/* map_checker5.c */
 void	map_free_copy(char **map_copy);
 
+/* map_checker5.c */
+int		map_check_collectibles(t_map *map, t_point player, int total_collect);
+int		map_check_exit(t_map *map, t_point player, t_point exit);
+int		map_check_reachability(t_map *map, t_point player,
+			t_point exit, int total_collect);
 
 #endif

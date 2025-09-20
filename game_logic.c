@@ -39,6 +39,11 @@ int	game_init(t_game_data *gdata, const char *map_path)
 		return (ERROR_CODE);
 
 	find_player(gdata);
+	find_exit(gdata);
+
+	/*if (!map_check_reachability(&gdata->map, gdata->player_tile,
+		gdata->exit_coord, gdata->total_collectibles))
+		return (ERROR_CODE);*/
 
 	gdata->dir = DIR_NONE;
 	gdata->moving = 0;
@@ -46,8 +51,8 @@ int	game_init(t_game_data *gdata, const char *map_path)
 	gdata->collected_count = 0;
 
 	/* Initial camera */
-	gdata->cam_x = gdata->player_px - gdata->win_w / 2 + TILE_SIZE / 2;
-	gdata->cam_y = gdata->player_py - gdata->win_h / 2 + TILE_SIZE / 2;
+	gdata->cam_x = gdata->player_pixel.x - gdata->win_w / 2 + TILE_SIZE / 2;
+	gdata->cam_y = gdata->player_pixel.y - gdata->win_h / 2 + TILE_SIZE / 2;
 	if (gdata->cam_x < 0)
 		gdata->cam_x = 0;
 	if (gdata->cam_y < 0)
@@ -91,33 +96,6 @@ int	load_image(t_game_data *gdata, t_img *out, const char *path)
 		return (ERROR_CODE);
 	}
 	return (SUCCESS_CODE);
-}
-
-void	find_player(t_game_data *gdata)
-{
-	size_t	x;
-	size_t	y;	
-
-	y = 0;
-	while (y < gdata->map.height)
-	{
-		x = 0;	
-		while (x < gdata->map.width)
-		{
-			if (gdata->map.matrix[y][x] == 'P')
-			{
-				gdata->player_tx = x;
-				gdata->player_ty = y;
-				gdata->player_px = x * TILE_SIZE;
-				gdata->player_py = y * TILE_SIZE;
-				/* replace P with empty floor */
-				gdata->map.matrix[y][x] = '0';
-				return ;
-			}
-			++x;
-		}
-		++y;
-	}
 }
 
 int	load_images(t_game_data *gdata)

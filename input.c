@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 17:04:15 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/17 17:04:18 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 13:11:28 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	start_moving(t_game_data *gdata, t_dir d)
 	gdata->moving = 1;
 }
 
-int		key_down(int keycode, void *param)
+int	key_down(int keycode, void *param)
 {
 	t_game_data	*gdata;
 	
@@ -40,9 +40,8 @@ int		key_down(int keycode, void *param)
 	return (0);
 }
 
-/* we do not stop movement on key release
- * in requirements */
-int		key_up(int keycode, void *param)
+/* We do not stop movement on key release */
+int	key_up(int keycode, void *param)
 {
 	(void)keycode;
 	(void)param;

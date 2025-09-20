@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 20:46:05 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/19 17:26:03 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 12:40:36 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,6 @@ int	map_check(const t_map *map)
 	{
         write(STDERR_FILENO, MAP_AT_LEAST_1_COL_ERR_MSG,
 			ft_strlen(MAP_AT_LEAST_1_COL_ERR_MSG));
-		return (ERROR_CODE);
-	}
-	if (!map_check_exit(map))
-	{
-        write(STDERR_FILENO, MAP_NO_WAY_TO_EXIT_ERR_MSG,
-			ft_strlen(MAP_NO_WAY_TO_EXIT_ERR_MSG));
 		return (ERROR_CODE);
 	}
 	return (SUCCESS_CODE);

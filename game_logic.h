@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 19:42:57 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/20 01:36:37 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 13:15:27 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,6 @@
 
 #define BREAK					2
 
-typedef struct s_point
-{
-	int	x;
-	int	y;
-}	t_point;
-
 typedef enum	e_dir
 {
 	DIR_NONE = 0,
@@ -88,14 +82,19 @@ typedef struct	s_img
 }	t_img;
 
 /* ASK WHAT WHAT PURPOSES SERVES player_tx, player_ty, player_px, player_py */
-/* mlx library resources */
+/* MLX library resources
+ *     cam_x/cam_y - camera offset in
+ *					 pixels (top-left
+ *					 of what is drawn);
+ *     win_w/win_h - pixels actually created. */
 typedef struct	s_game_data
 {
 	void	*mlx;
 	void	*mlx_win;
-	t_map	map; /* map_w = map.width; map_h = map_height */
-	int		win_w; /* pixel actually created */
+	int		win_w;
 	int		win_h;
+
+	t_map	map;
 
 	t_img	sea;
 	t_img	wall;
@@ -106,19 +105,17 @@ typedef struct	s_game_data
 	t_img	dolphin_down;
 	t_img	dolphin_left;
 
-	int		player_tx; /* tile x */
-	int		player_ty; /* tile y */
-	int		player_px; /* pixel x, top-left relative to map */
-	int		player_py; /* pixel y */
+	t_point	player_tile;
+	t_point	player_pixel;
+	t_point	exit_coord;
 
 	t_dir	dir;
-	int		moving; /* boolean */
+	int		moving;
 
 	int		moves_count;
 	int		collected_count;
 	int		total_collectibles;
 
-	/* Camera offset in pixels (top-left of what is drawn */
 	int		cam_x;
 	int		cam_y;
 	
@@ -128,9 +125,11 @@ typedef struct	s_game_data
 int		game_init(t_game_data *gdata, const char *file_path);
 int		game_cleanup(t_game_data *data);
 int		load_image(t_game_data *gdata, t_img *out, const char *path);
-void	find_player(t_game_data *gdata);
-void	game_loop(t_game_data *gdata);
 int		load_images(t_game_data *gdata);
+
+/* game_logic2.c */
+void	find_player(t_game_data *gdata);
+void	find_exit(t_game_data *gdata);
 
 /* input.c */
 void	start_moving(t_game_data *gdata, t_dir d);

@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 17:04:17 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/19 15:41:42 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 13:29:30 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ void	update_player(t_game_data * gdata)
 	if (!gdata->moving || gdata->dir == DIR_NONE)
 		return ;
 
-	target_tx = gdata->player_tx;
-	target_ty = gdata->player_ty;
+	target_tx = gdata->player_tile.x;
+	target_ty = gdata->player_tile.y;
 	if (gdata->dir == DIR_UP)
 		target_ty -= 1;
 	else if (gdata->dir == DIR_DOWN)
@@ -86,37 +86,37 @@ void	update_player(t_game_data * gdata)
 	 * is a wall we still need to detect collision when
 	 * reaching it */
 	/* Move step */
-	if (gdata->player_px < target_px)
-		gdata->player_px += MOVE_SPEED;
-	if (gdata->player_px > target_px)
-		gdata->player_px -= MOVE_SPEED;
-	if (gdata->player_py < target_py)
-		gdata->player_py += MOVE_SPEED;
-	if (gdata->player_py > target_py)
-		gdata->player_py -= MOVE_SPEED;
+	if ((int)gdata->player_pixel.x < target_px)
+		gdata->player_pixel.x += MOVE_SPEED;
+	if ((int)gdata->player_pixel.x > target_px)
+		gdata->player_pixel.x -= MOVE_SPEED;
+	if ((int)gdata->player_pixel.y < target_py)
+		gdata->player_pixel.y += MOVE_SPEED;
+	if ((int)gdata->player_pixel.y > target_py)
+		gdata->player_pixel.y -= MOVE_SPEED;
 
 	/* Clamp to target to avoid overshoot */
-	if ((gdata->player_px > target_px - MOVE_SPEED) &&
-		(gdata->player_px < target_px + MOVE_SPEED))
-		gdata->player_px = target_px;
-	if ((gdata->player_py > target_py - MOVE_SPEED) &&
-		(gdata->player_py < target_py + MOVE_SPEED))
-		gdata->player_py = target_py;
+	if (((int)gdata->player_pixel.x > target_px - MOVE_SPEED) &&
+		((int)gdata->player_pixel.x < target_px + MOVE_SPEED))
+		gdata->player_pixel.x = target_px;
+	if (((int)gdata->player_pixel.y > target_py - MOVE_SPEED) &&
+		((int)gdata->player_pixel.y < target_py + MOVE_SPEED))
+		gdata->player_pixel.y = target_py;
 
 	/* If reached target tile center (aligned) */
-	if (gdata->player_px == target_px && gdata->player_py == target_py)
+	if ((int)gdata->player_pixel.x == target_px && (int)gdata->player_pixel.y == target_py)
 	{
 		/* Update tile coords */
-		gdata->player_tx = target_tx;
-		gdata->player_ty = target_ty;
+		gdata->player_tile.x = target_tx;
+		gdata->player_tile.y = target_ty;
 		++gdata->moves_count;
 		ft_printf("Moves: %d\n", gdata->moves_count);
-		try_enter_tile(gdata, gdata->player_tx, gdata->player_ty);
+		try_enter_tile(gdata, gdata->player_tile.x, gdata->player_tile.y);
 	}
 
 	/* Update camera to follow player */
-	gdata->cam_x = gdata->player_px - gdata->win_w / 2 + TILE_SIZE / 2;
-	gdata->cam_y = gdata->player_py - gdata->win_h / 2 + TILE_SIZE / 2;
+	gdata->cam_x = gdata->player_pixel.x - gdata->win_w / 2 + TILE_SIZE / 2;
+	gdata->cam_y = gdata->player_pixel.y - gdata->win_h / 2 + TILE_SIZE / 2;
 	clamp_camera(gdata);
 }
 
@@ -213,7 +213,7 @@ int	render_frame(t_game_data *gdata)
 		dimg = &gdata->dolphin_left;
 	
 	mlx_put_image_to_window(gdata->mlx, gdata->mlx_win, dimg->img,
-		gdata->player_px - gdata->cam_x, gdata->player_py - gdata->cam_y);
+		gdata->player_pixel.x - gdata->cam_x, gdata->player_pixel.y - gdata->cam_y);
 
 	return (0);
 }
