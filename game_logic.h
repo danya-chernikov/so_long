@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 19:42:57 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/20 20:49:45 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 21:23:23 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,10 +141,9 @@ int		key_down(int keycode, void *param);
 int		key_up(int keycode, void *param);
 
 /* render.c */
+int		render_frame(t_game_data *gdata);
+void	update_player(t_game_data *gdata);
 void	clamp_camera(t_game_data *gdata);
 void	try_enter_tile(t_game_data *gdata, int nx, int ny);
-void	update_player(t_game_data *gdata);
-void	draw_tile(t_game_data *gdata, t_img *img, int px, int py);
-int		render_frame(t_game_data *gdata);
 
 #endif

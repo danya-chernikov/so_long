@@ -1,6 +1,7 @@
 #include "game_logic.h"
 #include <stdlib.h>
 
+/* GOOD! */
 int	game_init(t_game_data *gdata, const char *map_path)
 {
 	if (!game_init_1(gdata, map_path))
@@ -9,6 +10,7 @@ int	game_init(t_game_data *gdata, const char *map_path)
 	return (SUCCESS_CODE);
 }
 
+/* GOOD! */
 int	game_init_1(t_game_data *gdata, const char *map_path)
 {
 	ft_memset(gdata, '\0', sizeof (gdata));
@@ -38,6 +40,7 @@ int	game_init_1(t_game_data *gdata, const char *map_path)
 	return (SUCCESS_CODE);
 }
 
+/* GOOD! */
 void	game_init_2(t_game_data *gdata)
 {
 	gdata->dir = DIR_NONE;
@@ -52,6 +55,7 @@ void	game_init_2(t_game_data *gdata)
 }
 
 /* Computes desired window size in pixels */
+/* GOOD! */
 void	get_window_size(t_game_data *gdata)
 {
 	int	map_px_w;
@@ -73,6 +77,7 @@ void	get_window_size(t_game_data *gdata)
  * camera is centered on the player and
  * the camera does not scroll outside
  * the map boundaries */
+/* GOOD! */
 void	camera_init(t_game_data *gdata)
 {
 	int	max_cx;
