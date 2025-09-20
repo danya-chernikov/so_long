@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 17:04:17 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/20 22:45:36 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/20 22:50:30 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,21 @@ int	render_frame(t_game_data *gdata)
 		++i.y;
 	}
 
+	t_point	min_tile; /* mx0 and my0 */
+	t_point	max_tile; /* mx1 and my1 */
+
 	/* Draw objects only where tiles exist */
-	int	mx0 = tl_tile.x < 0 ? 0 : tl_tile.x;
-	int	my0 = tl_tile.y < 0 ? 0 : tl_tile.y;
-	int	mx1 = br_tile.x >= (int)gdata->map.width ? (int)gdata->map.width - 1 : br_tile.x;
-	int	my1 = br_tile.y >= (int)gdata->map.height ? (int)gdata->map.height - 1 : br_tile.y;
+	min_tile.x = tl_tile.x < 0 ? 0 : tl_tile.x;
+	min_tile.y = tl_tile.y < 0 ? 0 : tl_tile.y;
+	max_tile.x = br_tile.x >= (int)gdata->map.width ? (int)gdata->map.width - 1 : br_tile.x;
+	max_tile.y = br_tile.y >= (int)gdata->map.height ? (int)gdata->map.height - 1 : br_tile.y;
 
 	/* Draw tiles */
-	i.y = my0;	
-	while (i.y <= my1)
+	i.y = min_tile.y;
+	while (i.y <= max_tile.y)
 	{
-		i.x = mx0;
-		while (i.x <= mx1)
+		i.x = min_tile.x;
+		while (i.x <= max_tile.x)
 		{
 			p.x = i.x * TILE_SIZE;
 			p.y = i.y * TILE_SIZE;
