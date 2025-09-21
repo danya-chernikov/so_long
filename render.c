@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 17:04:17 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/21 01:20:37 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 02:45:51 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,21 +83,21 @@ void	draw_tiles(t_game_data *gdata, t_point *tl_tile, t_point *br_tile)
 void	check_tiles(t_game_data *gdata, t_point *tl_tile, t_point *br_tile, t_point *m)
 {
 	if (tl_tile->x < 0)
-		m[0].x = 0;
+		m[MIN_TILE].x = 0;
 	else
-		m[0].x = tl_tile->x;
+		m[MIN_TILE].x = tl_tile->x;
 	if (tl_tile->y < 0)
-		m[0].y = 0;
+		m[MIN_TILE].y = 0;
 	else
-		m[0].y = tl_tile->y;
+		m[MIN_TILE].y = tl_tile->y;
 	if (br_tile->x >= (int)gdata->map.width)
-		m[1].x = (int)gdata->map.width - 1;
+		m[MAX_TILE].x = (int)gdata->map.width - 1;
 	else
-		m[1].x = br_tile->x;
+		m[MAX_TILE].x = br_tile->x;
 	if (br_tile->y >= (int)gdata->map.height)
-		m[1].y = (int)gdata->map.height - 1;
+		m[MAX_TILE].y = (int)gdata->map.height - 1;
 	else
-		m[1].y = br_tile->y;
+		m[MAX_TILE].y = br_tile->y;
 }
 
 /* GOOD! */

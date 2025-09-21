@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 19:42:57 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/21 01:19:41 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 02:44:43 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@
 #define MEM_ALLOC_ERR_CODE		-1
 
 #define BREAK					2
+#define MIN_TILE				0
+#define MAX_TILE				1
 
 typedef enum	e_dir
 {
@@ -151,7 +153,11 @@ void	draw_tiles_loops(t_game_data *gdata, t_point *min_tile, t_point *max_tile);
 void	draw_tiles_inner_loop_body(t_game_data *gdata, t_point *i);
 void	draw_dolphin(t_game_data *gdata);
 void	update_player(t_game_data *gdata);
-void	clamp_camera(t_game_data *gdata);
+void	move_player_towards_target(t_game_data *gdata,
+			t_point *target_tile, t_point *target_pos);
 void	try_enter_tile(t_game_data *gdata, int nx, int ny);
+
+/* render3.c */
+void	clamp_camera(t_game_data *gdata);
 
 #endif
