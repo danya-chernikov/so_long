@@ -6,23 +6,23 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 19:42:57 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/21 02:44:43 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 03:51:53 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GAME_LOGIC_H
-#define GAME_LOGIC_H
+# define GAME_LOGIC_H
 
-#include "libx/mlx.h"
-#include "key_codes.h"
-#include "map.h"
+# include "libx/mlx.h"
+# include "key_codes.h"
+# include "map.h"
 
-#define GAME_NAME				"LITTLE-DOLPHIN-PARTIZAN"
+# define GAME_NAME					"LITTLE-DOLPHIN-PARTIZAN"
 
 /* System error messages ( for using with perror() ) */
-#define MEM_ALLOC_ERR_MSG		"malloc()"
-#define FILE_OPEN_ERR_MSG		"open()"
-#define FILE_READ_ERR_MSG		"read()"
+# define MEM_ALLOC_ERR_MSG			"malloc()"
+# define FILE_OPEN_ERR_MSG			"open()"
+# define FILE_READ_ERR_MSG			"read()"
 
 /* If the window created from the map
  * resources has a width and/or height
@@ -32,25 +32,28 @@
  * they will see black areas filling the
  * empty space. If the window created from
  * the map resources is larger than these
- * defaults, map scrolling will appear */
-#define WIN_DEFAULT_WIDTH		1920
-#define WIN_DEFAULT_HEIGHT		1080
-#define TILE_SIZE				128
-#define MOVE_SPEED				1 /* pixels per frame */
+ * defaults, map scrolling will appear.
+ * MOVE_SPEED is in pixels per frame */
+# define WIN_DEFAULT_WIDTH			1920
+# define WIN_DEFAULT_HEIGHT			1080
+# define TILE_SIZE					128
+# define MOVE_SPEED					1
 
-#define TEXTURE_SEA_PATH		"textures/water/water_1_128x128.xpm"
-#define TEXTURE_WALL_PATH		"textures/rocks/rock_1_128x128.xpm"
-#define TEXTURE_MINE_PATH		"textures/mines/mine_128x128.xpm"
-#define TEXTURE_EXIT_PATH		"textures/exit/skull_128x128.xpm"
-#define TEXTURE_DOLP_UP_PATH	"textures/dolphins/dolphin_up_128x64.xpm"
-#define TEXTURE_DOLP_RIGHT_PATH	"textures/dolphins/dolphin_right_128x64.xpm"
-#define TEXTURE_DOLP_DOWN_PATH	"textures/dolphins/dolphin_down_128x64.xpm"
-#define TEXTURE_DOLP_LEFT_PATH	"textures/dolphins/dolphin_left_128x64.xpm"
+# define TEXTURE_SEA_PATH			"textures/water/water_1_128x128.xpm"
+# define TEXTURE_WALL_PATH			"textures/rocks/rock_1_128x128.xpm"
+# define TEXTURE_MINE_PATH			"textures/mines/mine_128x128.xpm"
+# define TEXTURE_EXIT_PATH			"textures/exit/skull_128x128.xpm"
+# define TEXTURE_DOLP_UP_PATH		"textures/dolphins/dolphin_up_128x64.xpm"
+# define TEXTURE_DOLP_RIGHT_PATH	"textures/dolphins/dolphin_right_128x64.xpm"
+# define TEXTURE_DOLP_DOWN_PATH		"textures/dolphins/dolphin_down_128x64.xpm"
+# define TEXTURE_DOLP_LEFT_PATH		"textures/dolphins/dolphin_left_128x64.xpm"
 
 /* MLX library error messages */
-#define MLX_INIT_ERR_MSG		"Error\nmlx_init(): Failed to initialize mlx\n"
-#define MLX_WIN_CREATE_ERR_MSG	"Error\nmlx_new_window(): Cannot create a window\n"
-#define MLX_LOAD_IMG_ERR_MSG	"Error\nFaield to load image\n"
+# define MLX_INIT_ERR_MSG			\
+	"Error\nmlx_init(): Failed to initialize mlx\n"
+# define MLX_WIN_CREATE_ERR_MSG		\
+	"Error\nmlx_new_window(): Cannot create a window\n"
+# define MLX_LOAD_IMG_ERR_MSG		"Error\nFaield to load image\n"
 
 /* Exit codes
  *     ERROR         - denotes a general error (which may
@@ -59,15 +62,15 @@
  *                     allocation error, used when a
  *                     function can return multiple
  *                     error codes */
-#define SUCCESS_CODE			1
-#define ERROR_CODE				0
-#define MEM_ALLOC_ERR_CODE		-1
+# define SUCCESS_CODE				1
+# define ERROR_CODE					0
+# define MEM_ALLOC_ERR_CODE			-1
 
-#define BREAK					2
-#define MIN_TILE				0
-#define MAX_TILE				1
+# define BREAK						2
+# define MIN_TILE					0
+# define MAX_TILE					1
 
-typedef enum	e_dir
+typedef enum e_dir
 {
 	DIR_NONE = 0,
 	DIR_UP,
@@ -76,7 +79,7 @@ typedef enum	e_dir
 	DIR_LEFT
 }	t_dir;
 
-typedef struct	s_img
+typedef struct s_img
 {
 	void	*img;
 	int		width;
@@ -89,7 +92,7 @@ typedef struct	s_img
  *					 pixels (top-left
  *					 of what is drawn);
  *     win_w/win_h - pixels actually created. */
-typedef struct	s_game_data
+typedef struct s_game_data
 {
 	void	*mlx;
 	void	*mlx_win;
@@ -120,7 +123,6 @@ typedef struct	s_game_data
 
 	int		cam_x;
 	int		cam_y;
-	
 }	t_game_data;
 
 /* game_logic.c */
@@ -146,8 +148,10 @@ int		key_up(int keycode, void *param);
 int		render_frame(t_game_data *gdata);
 void	draw_sea(t_game_data *gdata, t_point *tl_tile, t_point *br_tile);
 void	draw_tiles(t_game_data *gdata, t_point *tl_tile, t_point *br_tile);
-void	check_tiles(t_game_data *gdata, t_point *tl_tile, t_point *br_tile, t_point *m);
-void	draw_tiles_loops(t_game_data *gdata, t_point *min_tile, t_point *max_tile);
+void	check_tiles(t_game_data *gdata, t_point *tl_tile,
+			t_point *br_tile, t_point *m);
+void	draw_tiles_loops(t_game_data *gdata, t_point *min_tile,
+			t_point *max_tile);
 
 /* render2.c */
 void	draw_tiles_inner_loop_body(t_game_data *gdata, t_point *i);

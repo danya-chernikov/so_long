@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 02:52:02 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/21 02:52:03 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 03:47:08 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@ int	game_cleanup(t_game_data *gdata)
 /* GOOD! */
 int	load_image(t_game_data *gdata, t_img *out, const char *path)
 {
-	out->img = mlx_xpm_file_to_image(gdata->mlx, (char *)path, &out->width, &out->height);
+	out->img = mlx_xpm_file_to_image(gdata->mlx, (char *)path,
+			&out->width, &out->height);
 	if (!out->img)
 	{
-		write(STDERR_FILENO, MLX_LOAD_IMG_ERR_MSG, ft_strlen(MLX_LOAD_IMG_ERR_MSG));
+		write(STDERR_FILENO, MLX_LOAD_IMG_ERR_MSG,
+			ft_strlen(MLX_LOAD_IMG_ERR_MSG));
 		game_cleanup(gdata);
 		return (ERROR_CODE);
 	}
@@ -71,7 +73,7 @@ void	find_player(t_game_data *gdata)
 	y = 0;
 	while (y < gdata->map.height)
 	{
-		x = 0;	
+		x = 0;
 		while (x < gdata->map.width)
 		{
 			if (gdata->map.matrix[y][x] == MAP_PLAYER_POS_SYMBOL)
@@ -98,7 +100,7 @@ void	find_exit(t_game_data *gdata)
 	y = 0;
 	while (y < gdata->map.height)
 	{
-		x = 0;	
+		x = 0;
 		while (x < gdata->map.width)
 		{
 			if (gdata->map.matrix[y][x] == MAP_EXIT_SYMBOL)

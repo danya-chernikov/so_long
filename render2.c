@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 02:52:07 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/21 02:52:08 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 04:03:50 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ void	draw_tiles_inner_loop_body(t_game_data *gdata, t_point *i)
 /* GOOD! */
 void	draw_dolphin(t_game_data *gdata)
 {
-	t_img *dimg = &gdata->dolphin_down;
+	t_img	*dimg;
+
+	dimg = &gdata->dolphin_down;
 	if (gdata->dir == DIR_UP)
 		dimg = &gdata->dolphin_up;
 	else if (gdata->dir == DIR_RIGHT)
@@ -50,7 +52,7 @@ void	draw_dolphin(t_game_data *gdata)
 	else if (gdata->dir == DIR_DOWN)
 		dimg = &gdata->dolphin_down;
 	else if (gdata->dir == DIR_LEFT)
-		dimg = &gdata->dolphin_left;	
+		dimg = &gdata->dolphin_left;
 	mlx_put_image_to_window(gdata->mlx, gdata->mlx_win, dimg->img,
 		gdata->player_pixel.x - gdata->cam_x,
 		gdata->player_pixel.y - gdata->cam_y);
@@ -65,20 +67,20 @@ void	draw_dolphin(t_game_data *gdata)
  * t_point	target_tile - target_tx and target_ty;
  * t_point	target_pos  - target_px and target_py */
 /* GOOD! */
-void	update_player(t_game_data * gdata)
+void	update_player(t_game_data *gdata)
 {
 	t_point	target_tile;
 	t_point	target_pos;
-	
+
 	move_player_towards_target(gdata, &target_tile, &target_pos);
-	if (((int)gdata->player_pixel.x > target_pos.x - MOVE_SPEED) &&
-		((int)gdata->player_pixel.x < target_pos.x + MOVE_SPEED))
+	if (((int)gdata->player_pixel.x > target_pos.x - MOVE_SPEED)
+		&& ((int)gdata->player_pixel.x < target_pos.x + MOVE_SPEED))
 		gdata->player_pixel.x = target_pos.x;
-	if (((int)gdata->player_pixel.y > target_pos.y - MOVE_SPEED) &&
-		((int)gdata->player_pixel.y < target_pos.y + MOVE_SPEED))
+	if (((int)gdata->player_pixel.y > target_pos.y - MOVE_SPEED)
+		&& ((int)gdata->player_pixel.y < target_pos.y + MOVE_SPEED))
 		gdata->player_pixel.y = target_pos.y;
-	if ((int)gdata->player_pixel.x == target_pos.x &&
-		(int)gdata->player_pixel.y == target_pos.y)
+	if ((int)gdata->player_pixel.x == target_pos.x
+		&& (int)gdata->player_pixel.y == target_pos.y)
 	{
 		gdata->player_tile.x = target_tile.x;
 		gdata->player_tile.y = target_tile.y;
@@ -124,8 +126,8 @@ void	try_enter_tile(t_game_data *gdata, int nx, int ny)
 {
 	char	tile;
 
-	if (nx < 0 || ny < 0 ||
-		nx >= (int)gdata->map.width || ny >= (int)gdata->map.height)
+	if (nx < 0 || ny < 0
+		|| nx >= (int)gdata->map.width || ny >= (int)gdata->map.height)
 		return ;
 	tile = gdata->map.matrix[ny][nx];
 	if (tile == MAP_WALL_SYMBOL)

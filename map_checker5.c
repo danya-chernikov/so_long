@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 02:51:54 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/21 02:51:55 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 03:26:04 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "game_logic.h"
 #include <stdlib.h>
 
-/* GOOD! */
 void	map_check_collectibles_loop(t_map *map, char **map_copy,
 			t_queue *q, int *found)
 {
@@ -23,8 +22,8 @@ void	map_check_collectibles_loop(t_map *map, char **map_copy,
 	while (q->head < q->tail)
 	{
 		cur = q->data[q->head++];
-		if (cur.x < 0 || cur.y < 0 ||
-			cur.x >= (int)map->width || cur.y >= (int)map->height)
+		if (cur.x < 0 || cur.y < 0
+			|| cur.x >= (int)map->width || cur.y >= (int)map->height)
 			continue ;
 		*found += map_clt_hndl_right_neighbor(q, map_copy, map->width, cur);
 		*found += map_clt_hndl_left_neighbor(q, map_copy, cur);
@@ -33,8 +32,8 @@ void	map_check_collectibles_loop(t_map *map, char **map_copy,
 	}
 }
 
-/* GOOD! */
-int	map_clt_hndl_right_neighbor(t_queue *q, char **map_copy, size_t map_width, t_point cur)
+int	map_clt_hndl_right_neighbor(t_queue *q, char **map_copy,
+	size_t map_width, t_point cur)
 {
 	int		found;
 	char	c;
@@ -55,7 +54,6 @@ int	map_clt_hndl_right_neighbor(t_queue *q, char **map_copy, size_t map_width, t
 	return (found);
 }
 
-/* GOOD! */
 int	map_clt_hndl_left_neighbor(t_queue *q, char **map_copy, t_point cur)
 {
 	int		found;
@@ -77,8 +75,8 @@ int	map_clt_hndl_left_neighbor(t_queue *q, char **map_copy, t_point cur)
 	return (found);
 }
 
-/* GOOD! */
-int	map_clt_hndl_down_neighbor(t_queue *q, char **map_copy, size_t map_height, t_point cur)
+int	map_clt_hndl_down_neighbor(t_queue *q, char **map_copy,
+	size_t map_height, t_point cur)
 {
 	int		found;
 	char	c;
@@ -99,7 +97,6 @@ int	map_clt_hndl_down_neighbor(t_queue *q, char **map_copy, size_t map_height, t
 	return (found);
 }
 
-/* GOOD! */
 int	map_clt_hndl_up_neighbor(t_queue *q, char **map_copy, t_point cur)
 {
 	int		found;

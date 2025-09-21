@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 02:51:49 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/21 02:51:52 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 03:24:52 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 /* GOOD! */
 int	map_check_cnt_is_valid(const t_map *map)
 {
-	size_t  raw_i;
-	size_t  col_i;
+	size_t	raw_i;
+	size_t	col_i;
 
 	raw_i = 0;
 	while (raw_i < map->height)
@@ -64,8 +64,8 @@ int	map_check_if_closed(const t_map *map)
 /* GOOD! */
 int	map_check_duplicates(const t_map *map)
 {
-	size_t  raw_i;
-	size_t  col_i;
+	size_t	raw_i;
+	size_t	col_i;
 	short	exit_cnt;
 	short	pos_cnt;
 
@@ -98,19 +98,19 @@ int	map_check_reachability(t_game_data *gdata)
 	find_player(gdata);
 	find_exit(gdata);
 	res = map_check_collectibles(&gdata->map, gdata->player_tile,
-		gdata->total_collectibles);
+			gdata->total_collectibles);
 	if (!res)
 	{
-        write(STDERR_FILENO, MAP_CLTS_NOT_REACH_ERR_MSG,
+		write(STDERR_FILENO, MAP_CLTS_NOT_REACH_ERR_MSG,
 			ft_strlen(MAP_CLTS_NOT_REACH_ERR_MSG));
-        return (ERROR_CODE);
+		return (ERROR_CODE);
 	}
 	res = map_check_exit(gdata, gdata->player_tile);
 	if (!res)
 	{
-        write(STDERR_FILENO, MAP_NO_WAY_TO_EXIT_ERR_MSG,
+		write(STDERR_FILENO, MAP_NO_WAY_TO_EXIT_ERR_MSG,
 			ft_strlen(MAP_NO_WAY_TO_EXIT_ERR_MSG));
-        return (ERROR_CODE);
+		return (ERROR_CODE);
 	}
 	if (res == MEM_ALLOC_ERR_CODE)
 		return (MEM_ALLOC_ERR_CODE);

@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 02:51:56 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/21 02:51:56 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 03:29:30 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include "game_logic.h"
 #include <stdlib.h>
 
-/* Reuse BFS idea for exit reachability (returns 1 if exit is reachable) */
-/* GOOD! */
+/* Reuse BFS idea for exit reachability (returns 1 if
+ * exit is reachable) */
 int	map_check_exit(t_game_data *gdata, t_point player)
 {
 	t_queue	q;
@@ -39,7 +39,6 @@ int	map_check_exit(t_game_data *gdata, t_point player)
 	return (reached);
 }
 
-/* GOOD! */
 void	map_check_exit_loop(t_game_data *gdata, char **map_copy,
 			t_queue *q, int *reached)
 {
@@ -48,11 +47,12 @@ void	map_check_exit_loop(t_game_data *gdata, char **map_copy,
 	while (q->head < q->tail)
 	{
 		cur = q->data[q->head++];
-		if (cur.x < 0 || cur.y < 0 ||
-			cur.x >= (int)gdata->map.width || cur.y >= (int)gdata->map.height)
+		if (cur.x < 0 || cur.y < 0
+			|| cur.x >= (int)gdata->map.width
+			|| cur.y >= (int)gdata->map.height)
 			continue ;
-		if (cur.x == (int)gdata->exit_coord.x &&
-			cur.y == (int)gdata->exit_coord.y)
+		if (cur.x == (int)gdata->exit_coord.x
+			&& cur.y == (int)gdata->exit_coord.y)
 		{
 			*reached = 1;
 			break ;
@@ -64,8 +64,8 @@ void	map_check_exit_loop(t_game_data *gdata, char **map_copy,
 	}
 }
 
-/* GOOD! */
-void	map_exit_hndl_right_neighbor(t_queue *q, char **map_copy, size_t map_width, t_point cur)
+void	map_exit_hndl_right_neighbor(t_queue *q, char **map_copy,
+	size_t map_width, t_point cur)
 {
 	char	c;
 
@@ -81,7 +81,6 @@ void	map_exit_hndl_right_neighbor(t_queue *q, char **map_copy, size_t map_width,
 	}
 }
 
-/* GOOD! */
 void	map_exit_hndl_left_neighbor(t_queue *q, char **map_copy, t_point cur)
 {
 	char	c;
@@ -98,8 +97,8 @@ void	map_exit_hndl_left_neighbor(t_queue *q, char **map_copy, t_point cur)
 	}
 }
 
-/* GOOD! */
-void	map_exit_hndl_down_neighbor(t_queue *q, char **map_copy, size_t map_height, t_point cur)
+void	map_exit_hndl_down_neighbor(t_queue *q, char **map_copy,
+	size_t map_height, t_point cur)
 {
 	char	c;
 

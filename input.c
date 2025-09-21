@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 17:04:15 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/20 13:11:28 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 03:30:33 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	start_moving(t_game_data *gdata, t_dir d)
 int	key_down(int keycode, void *param)
 {
 	t_game_data	*gdata;
-	
+
 	gdata = (t_game_data *)param;
 	if (!gdata)
 		return (0);
@@ -45,6 +45,5 @@ int	key_up(int keycode, void *param)
 {
 	(void)keycode;
 	(void)param;
-	
 	return (0);
 }

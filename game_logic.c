@@ -6,14 +6,13 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 02:52:01 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/21 02:52:01 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 03:46:15 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "game_logic.h"
 #include <stdlib.h>
 
-/* GOOD! */
 int	game_init(t_game_data *gdata, const char *map_path)
 {
 	if (!game_init_1(gdata, map_path))
@@ -22,7 +21,6 @@ int	game_init(t_game_data *gdata, const char *map_path)
 	return (SUCCESS_CODE);
 }
 
-/* GOOD! */
 int	game_init_1(t_game_data *gdata, const char *map_path)
 {
 	ft_memset(gdata, '\0', sizeof (gdata));
@@ -44,7 +42,7 @@ int	game_init_1(t_game_data *gdata, const char *map_path)
 		write(STDERR_FILENO, MLX_WIN_CREATE_ERR_MSG,
 			ft_strlen(MLX_WIN_CREATE_ERR_MSG));
 		return (ERROR_CODE);
-	}	
+	}
 	if (!load_images(gdata))
 		return (ERROR_CODE);
 	if (!map_check_reachability(gdata))
@@ -52,7 +50,6 @@ int	game_init_1(t_game_data *gdata, const char *map_path)
 	return (SUCCESS_CODE);
 }
 
-/* GOOD! */
 void	game_init_2(t_game_data *gdata)
 {
 	gdata->dir = DIR_NONE;
@@ -60,14 +57,13 @@ void	game_init_2(t_game_data *gdata)
 	gdata->moves_count = 0;
 	gdata->collected_count = 0;
 	camera_init(gdata);
-	mlx_hook(gdata->mlx_win, 2, 1L<<0, key_down, gdata);
-	mlx_hook(gdata->mlx_win, 3, 1L<<1, key_up, gdata);
+	mlx_hook(gdata->mlx_win, 2, 1L << 0, key_down, gdata);
+	mlx_hook(gdata->mlx_win, 3, 1L << 1, key_up, gdata);
 	mlx_hook(gdata->mlx_win, 17, 0, (int (*)(void *))game_cleanup, gdata);
 	mlx_loop_hook(gdata->mlx, (int (*)(void *))render_frame, gdata);
 }
 
 /* Computes desired window size in pixels */
-/* GOOD! */
 void	get_window_size(t_game_data *gdata)
 {
 	int	map_px_w;
@@ -89,7 +85,6 @@ void	get_window_size(t_game_data *gdata)
  * camera is centered on the player and
  * the camera does not scroll outside
  * the map boundaries */
-/* GOOD! */
 void	camera_init(t_game_data *gdata)
 {
 	int	max_cx;
