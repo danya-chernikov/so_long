@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:45 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/21 03:42:25 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 04:52:17 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,5 +148,6 @@ void	map_exit_hndl_up_neighbor(t_queue *q, char **map_copy, t_point cur);
 int		queue_init(t_queue *q, size_t qcap);
 char	**map_duplicate(t_map *map);
 void	map_free_copy(char **map_copy);
+void	map_free_badalloc(t_map *map, size_t *raw_i);
 
 #endif

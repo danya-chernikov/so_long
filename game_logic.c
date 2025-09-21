@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 02:52:01 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/21 03:46:15 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 04:53:39 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	game_init_1(t_game_data *gdata, const char *map_path)
 	if (!map_init(&gdata->map, map_path) || !map_check(&gdata->map))
 		return (ERROR_CODE);
 	gdata->total_collectibles = map_get_collect_num(&gdata->map);
-	map_print(&gdata->map);
 	gdata->mlx = mlx_init();
 	if (!gdata->mlx)
 	{

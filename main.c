@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:50:38 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/20 18:26:33 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 04:47:01 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ int	main(int argc, char *argv[])
 	if (argc != 2)
 	{
 		write(STDERR_FILENO, MAP_PATH_ERR_MSG, ft_strlen(MAP_PATH_ERR_MSG));
+		exit(EXIT_FAILURE);
+	}
+	if (!map_check_file_ext(argv[1]))
+	{
+		write(STDERR_FILENO, MAP_EXT_ERR_MSG, ft_strlen(MAP_EXT_ERR_MSG));
 		exit(EXIT_FAILURE);
 	}
 	ft_bzero(&gdata, sizeof (t_game_data));

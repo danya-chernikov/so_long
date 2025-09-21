@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 15:51:36 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/21 04:40:09 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 04:47:08 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,6 @@ int	map_init(t_map *map, const char *file_path)
 	int		fd;
 	char	*file_cnt;
 
-	if (!map_check_file_ext(file_path))
-	{
-		write(STDERR_FILENO, MAP_EXT_ERR_MSG, ft_strlen(MAP_EXT_ERR_MSG));
-		return (ERROR_CODE);
-	}
 	fd = open(file_path, O_RDONLY);
 	if (fd < 0)
 	{

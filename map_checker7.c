@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 02:51:58 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/21 02:51:58 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 04:53:00 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,18 @@ void	map_free_copy(char **map_copy)
 		++i;
 	}
 	free(map_copy);
+}
+
+void	map_free_badalloc(t_map *map, size_t *raw_i)
+{
+	--(*raw_i);
+	while (*raw_i > 0)
+	{
+		free(map->matrix[*raw_i]);
+		--(*raw_i);
+	}
+	free(map->matrix[*raw_i]);
+	free(map->matrix);
+	write(STDERR_FILENO, MEM_ALLOC_ERR_MSG,
+		ft_strlen(MEM_ALLOC_ERR_MSG));
 }
