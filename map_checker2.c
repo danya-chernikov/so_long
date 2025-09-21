@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 20:23:54 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/21 03:17:34 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 04:18:15 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,10 @@ int	map_detect_raw(t_map *map, char *file_cnt, size_t cnt_size, void **pack)
 	line_len = (size_t *)pack[2];
 	*line_len = map_calc_raw_width(map, file_cnt, cnt_size, cnt_i);
 	if (*line_len == 0)
+	{
+		free(pack);
 		return (ERROR_CODE);
+	}
 	map->matrix[*raw_i] = (char *)malloc((map->width + 1) * sizeof (char));
 	if (!map->matrix[*raw_i])
 	{
@@ -118,8 +121,10 @@ int	map_detect_raw(t_map *map, char *file_cnt, size_t cnt_size, void **pack)
 		free(map->matrix[*raw_i]);
 		free(map->matrix);
 		write(STDERR_FILENO, MEM_ALLOC_ERR_MSG, ft_strlen(MEM_ALLOC_ERR_MSG));
+		free(pack);
 		return (ERROR_CODE);
 	}
+	free(pack);
 	return (SUCCESS_CODE);
 }
 

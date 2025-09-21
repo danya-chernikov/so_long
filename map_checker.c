@@ -6,7 +6,7 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 15:51:36 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/21 03:08:30 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 04:40:09 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ int	map_init(t_map *map, const char *file_path)
 		return (ERROR_CODE);
 	}
 	if (!map_move_raws_into_matrix(map, fd, &file_cnt))
+	{
+		free(file_cnt);
 		return (ERROR_CODE);
+	}
 	free(file_cnt);
 	close(fd);
 	return (SUCCESS_CODE);

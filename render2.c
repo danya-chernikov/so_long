@@ -6,13 +6,12 @@
 /*   By: dchernik <dchernik@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 02:52:07 by dchernik          #+#    #+#             */
-/*   Updated: 2025/09/21 04:03:50 by dchernik         ###   ########.fr       */
+/*   Updated: 2025/09/21 04:32:27 by dchernik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "game_logic.h"
 
-/* GOOD! */
 void	draw_tiles_inner_loop_body(t_game_data *gdata, t_point *i)
 {
 	t_point	p;
@@ -39,7 +38,6 @@ void	draw_tiles_inner_loop_body(t_game_data *gdata, t_point *i)
 }
 
 /* Draw player at its pixel position */
-/* GOOD! */
 void	draw_dolphin(t_game_data *gdata)
 {
 	t_img	*dimg;
@@ -66,12 +64,13 @@ void	draw_dolphin(t_game_data *gdata)
  * we set the logical tile to the target tile.
  * t_point	target_tile - target_tx and target_ty;
  * t_point	target_pos  - target_px and target_py */
-/* GOOD! */
 void	update_player(t_game_data *gdata)
 {
 	t_point	target_tile;
 	t_point	target_pos;
 
+	ft_bzero(&target_tile, sizeof(target_tile));
+	ft_bzero(&target_pos, sizeof(target_pos));
 	move_player_towards_target(gdata, &target_tile, &target_pos);
 	if (((int)gdata->player_pixel.x > target_pos.x - MOVE_SPEED)
 		&& ((int)gdata->player_pixel.x < target_pos.x + MOVE_SPEED))
@@ -93,7 +92,6 @@ void	update_player(t_game_data *gdata)
 	clamp_camera(gdata);
 }
 
-/* GOOD! */
 void	move_player_towards_target(t_game_data *gdata,
 			t_point *target_tile, t_point *target_pos)
 {
@@ -121,7 +119,6 @@ void	move_player_towards_target(t_game_data *gdata,
 		gdata->player_pixel.y -= MOVE_SPEED;
 }
 
-/* GOOD! */
 void	try_enter_tile(t_game_data *gdata, int nx, int ny)
 {
 	char	tile;
